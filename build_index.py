@@ -34,11 +34,10 @@ def build_inverted_index():
                     inverted_index[word].append(tmp)
 
 
-
 if __name__ == '__main__':
     # str = '4_计算机科学与技术系.txt'
     # tmp = str.split('_')
     # print(tmp)
     build_inverted_index()
     # 打印倒排索引
-    print(inverted_index)
+    #print(inverted_index)
