@@ -5,28 +5,26 @@ from bs4 import BeautifulSoup
 from string import punctuation
 from time import sleep
 import random
-#import Elasticsearch
+import pickle
+# import Elasticsearch
 # MAX_NUM = 15
-
-cc_base_url = 'http://cc.nankai.edu.cn'
-# cur = 'http://cc.nankai.edu.cn'
-#print(type(cur))
-# 已经爬取过的网页，用集合
-used_url_set = set()
-# 将要爬取的网页，用列表保存，因为集合无序，无法遍历
-to_use_url_list = ['http://cc.nankai.edu.cn']
-
-# 这是需要登录、不在校园网内无法访问的url。爬不了的
-dustbin_set = [
-    'http://cc-backend.nankai.edu.cn',
-    'http://yzxt.nankai.edu.cn/intern/frontend/web/index.php'
-    ]
-
-# 字典，记录1号对应哪个url，2号对应哪个url（1、2在文件标题中）
-url_id_dic = dict()
+# cc_base_url = 'http://cc.nankai.edu.cn'
+# # cur = 'http://cc.nankai.edu.cn'
+# # print(type(cur))
+# # 已经爬取过的网页，用集合
+# used_url_set = set()
+# # 将要爬取的网页，用列表保存，因为集合无序，无法遍历
+# to_use_url_list = ['http://cc.nankai.edu.cn']
+# # 这是需要登录、不在校园网内无法访问的url。爬不了的
+# dustbin_set = [
+#     'http://cc-backend.nankai.edu.cn',
+#     'http://yzxt.nankai.edu.cn/intern/frontend/web/index.php'
+#     ]
+# # 字典，记录1号对应哪个url，2号对应哪个url（1、2在文件标题中）
+# url_id_dic = dict()
 
 
-def get_url_data(base_url, count):
+def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_base_url, dustbin_set):
     """
     爬取url，并把内容保存到本地。
     获取可能会用到的爬取链接。
@@ -40,6 +38,13 @@ def get_url_data(base_url, count):
         used_url_set.add(base_url)
         print('无法爬取该页面//$^$//')
         return count
+
+    if "login" in base_url:
+        to_use_url_list.remove(base_url)
+        used_url_set.add(base_url)
+        print('login 无法爬取该页面//$^$//')
+        return count
+
     # 返回爬取到的网页
     html = requests.get(base_url, timeout=5)
     # 解决爬取网页乱码的问题
@@ -49,7 +54,13 @@ def get_url_data(base_url, count):
     # 找到了我想打开的文件夹
     #html_title = html.title.string
     tmp = soup.find('title')
-    html_title = tmp.text # str类型
+    if tmp is None:
+        to_use_url_list.remove(base_url)
+        used_url_set.add(base_url)
+        print('title为空 没有内容 无法爬取该页面//$^$//')
+        return count
+    else:
+        html_title = tmp.text # str类型
     # 去掉标题中的空格、标点符号
     #教代会、工会委员会.txt
     #html_title = html_title.replace("/", '')
@@ -134,7 +145,7 @@ def get_url_data(base_url, count):
                 url = cc_base_url + url
         # 如果这个href里有文件
         #print("完善后的url",  url)
-        if url not in used_url_set:
+        if url not in used_url_set and 'nankai' in url:
             #print(">>> >>>add ", url ,"to to_use_url_list")
             to_use_url_list.append(url)
         # num = num + 1
@@ -151,23 +162,59 @@ def get_url_data(base_url, count):
     return count
 
 
+def spider():
+    cc_base_url = 'http://cc.nankai.edu.cn'
+    # cur = 'http://cc.nankai.edu.cn'
+    # print(type(cur))
+    # 已经爬取过的网页，用集合
+    used_url_set = set()
+    # 将要爬取的网页，用列表保存，因为集合无序，无法遍历
+    to_use_url_list = ['http://cc.nankai.edu.cn']
+    # 这是需要登录、不在校园网内无法访问的url。爬不了的
+    dustbin_set = [
+        'http://cc-backend.nankai.edu.cn',
+        'http://yzxt.nankai.edu.cn/intern/frontend/web/index.php',
+        'http://online.nankai.edu.cn/nk_portal/index',
+        'http://eamis.nankai.edu.cn/eams/login.action',
+        'http://nkoa.nankai.edu.cn/login/Login.jsp?logintype=1',
+        'http://cc.nankai.edu.cn/_redirect?siteId=234&columnId=13481&articleId=153604'
+    ]
+    # 字典，记录1号对应哪个url，2号对应哪个url（1、2在文件标题中）
+    url_id_dic = dict()
+    mycount = 0
+    for i in range(0, 200):
+        if to_use_url_list is not None and mycount < 100:
+            print("@ 爬取次数", i)
+            tmp = to_use_url_list[0]
+            mycount = get_url_data(tmp, mycount, url_id_dic, to_use_url_list, used_url_set, cc_base_url, dustbin_set)
+            # 爬取网页 礼貌hh
+            # 休息一下。太慢了，不休息了
+            # sleep(random.randint(0, 1))
+
+    # 保存字典文件url_id_dic
+    with open("dataset/url_id_dic.pkl", "wb") as tf:
+        pickle.dump(url_id_dic, tf)
+    tf.close()
+    #return url_id_dic
+
 if __name__ == '__main__':
+    spider()
     # print("要爬取的网页", to_use_url_list)
     # test_html = get_html('https://cc.nankai.edu.cn/2022/1219/c13291a502413/page.htm')
     #get_url_data('https://cc.nankai.edu.cn/2022/1219/c13291a502413/page.htm')
     # print("要爬取的网页", to_use_url_list)
     # print("爬取过的网页", used_url_set)
-    mycount = 0
-    for i in range(0, 100):
-        if to_use_url_list is not None and mycount < 50:
-            print("@ 爬取次数", i)
-            tmp = to_use_url_list[0]
-            mycount = get_url_data(tmp, mycount)
+    # mycount = 0
+    # for i in range(0, 100):
+    #     if to_use_url_list is not None and mycount < 50:
+    #         print("@ 爬取次数", i)
+    #         tmp = to_use_url_list[0]
+    #         mycount = get_url_data(tmp, mycount)
             # 爬取网页 礼貌hh
             # 休息一下。太慢了，不休息了
             #sleep(random.randint(0, 1))
             #mycount = mycount + 1
-    print(url_id_dic)
+    #print(url_id_dic)
     #print("要爬取的网页", to_use_url_list)
 
 

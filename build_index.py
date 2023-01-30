@@ -22,6 +22,20 @@ def cal_tf(term, a_doc):
         if t == term:
             count += 1
     return math.log(count + 1, 10)
+    #return count
+
+
+def max_index(lst):
+    """
+    :param lst: 列表
+    :return: 最大值的索引，可能有多个
+    """
+    index = []
+    max_n = max(lst)
+    for i in range(len(lst)):
+        if lst[i] == max_n:
+            index.append(i)
+    return index  #返回一个列表
 
 
 def build_inverted_index():
@@ -68,11 +82,11 @@ def build_inverted_index():
     return inverted_index, txt_num, txt_words_list
 
 
-def query(inverted_index, txt_words_list, txt_num, query_str):
+def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
     # tf 行数 = 词项的数目，列数 = 9（文档） + 1（查询）
     terms_num = len(inverted_index)
     tf_2D_arr = np.zeros((terms_num, txt_num + 1))
-    print(tf_2D_arr)
+    #print(tf_2D_arr)
     # 所有单词
     terms_list = list(inverted_index.keys())
     # 循环计算tf数组
@@ -81,8 +95,58 @@ def query(inverted_index, txt_words_list, txt_num, query_str):
         # 文档
         for j in range(1, txt_num + 1):
             tf_2D_arr[i][j] = cal_tf(terms_list[i], txt_words_list[j - 1])
-    print('==============================================================')
-    print(tf_2D_arr)
+    #print('==============================================================')
+    print('%% end compute tf')
+    #print(tf_2D_arr)
+    # 每个词项在整个文档集合的逆向文件频率
+    idf_arr = np.zeros(terms_num)
+    # 某个词项出现的文档数量， log（N/idf）
+    for k in range(terms_num):
+        # tf_2D_arr数组中每一行，非零元素的个数，不算第一列的（那是查询的词项）
+        # idf_arr[k] = np.count_nonzero(tf_2D_arr[k][1:])
+        # 包含第k个词条w的文档数
+        tmp = len(inverted_index[terms_list[k]])
+        #np.count_nonzero(tf_2D_arr[k][1:]
+        idf_arr[k] = math.log((txt_num / tmp), 10)
+        #idf_arr[k] = tmp
+    print(idf_arr)
+    print('%% end compute idf')
+    # 向量中的每一项用tf*idf来表示
+    # 查询向量
+    query_vector = np.array([])
+    for i in range(terms_num):
+        query_vector = np.append(query_vector, idf_arr[i] * tf_2D_arr[i][0])
+    print('%% end compute query_vector')
+    print(query_vector)
+    # 文档的查询向量，都存到一个列表中
+    docs_vector = []
+    for doc_num in range(txt_num):
+        doc_vector = np.array([])
+        for i in range(terms_num):
+            doc_vector = np.append(doc_vector, idf_arr[i] * tf_2D_arr[i][doc_num + 1])
+        docs_vector.append(doc_vector)
+    print(docs_vector)
+    print('%% end compute docs_vector')
+
+    # 计算余弦相似度Cosine similarity
+    docs_cos_sim = []
+    for i in range(txt_num):
+        num1 = query_vector.dot(docs_vector[i])
+        num2 = np.linalg.norm(query_vector) * np.linalg.norm(docs_vector[i])
+        # cos_sim = query_vector.dot(docs_vector[i]) / (np.linalg.norm(query_vector)*np.linalg.norm(docs_vector[i]))
+        if num2 == 0:
+            cos_sim = 0.0
+        else:
+            cos_sim = num1 / num2
+        docs_cos_sim.append(cos_sim)
+
+    max_cos_sim = max(docs_cos_sim)
+    indexes = max_index(docs_cos_sim)
+    url_list = []
+    for i in indexes:
+        url_list.append(url_id_dic[i])
+    print("query result is ......")
+    print(url_list)
 
 if __name__ == '__main__':
     query_str = input("请输入您的查询词项，如输入多个，请以空格分割:")
@@ -93,6 +157,6 @@ if __name__ == '__main__':
     # str = '4_计算机科学与技术系.txt'
     # tmp = str.split('_')
     # print(tmp)
-    build_inverted_index()
+    #build_inverted_index()
     # 打印倒排索引
-    #print(inverted_index)
+    print(inverted_index)
