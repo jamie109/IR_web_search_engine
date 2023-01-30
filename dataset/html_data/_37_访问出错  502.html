@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi">
+    <meta charset="UTF-8">
+    <title>访问出错 - 502</title>
+</head>
+<body>
+<div style="box-sizing: border-box;
+    font-size: 1em;
+    line-height: 1.6em;
+    margin: 14vh auto 0;
+    max-width: 600px;
+    width: 100%;
+    text-align:center;
+">
+    <img src="/wengine-auth-failed.png" alt="" style="width:200px;height:200px;">
+    <div style="margin-top:40px; color:#535353; text-align:left;">
+        <h3>出错啦！该网站无法访问，可能的原因为：</h3>
+        <p id="reason">
+        </p>
+        <div style="display: block;
+    font-size: .8em;margin-top: 12px;">(错误代码：502)</div>
+    </div>
+</div>
+<script>
+    function IsIPv4(ip){
+        if ( /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/g.test(ip)) {
+            return true;
+        }
+        return false;
+    }
+    function IsIPv6(ip){
+        if ( /^((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*::((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4}))*|((?:[0-9A-Fa-f]{1,4}))((?::[0-9A-Fa-f]{1,4})){7}$/g.test(ip)) {
+            return true;
+        }
+        return false;
+    }
+    function IsIP(ip)
+    {
+        if(IsIPv4(ip) || IsIPv6(ip)){
+            return true;
+        }
+        return false;
+    }
+    var remote_addr = '183.197.55.118';
+    var host = window.location.hostname;
+    function GetErrors(){
+        var errors = [];
+        if(IsIP(host)) {
+            errors.push("您所访问目的的为IP地址("+host+")，系统不允许直接通过IP进行访问，请使用业务域名进行访问");
+            return errors;
+        }
+        errors.push("您正在访问的目的地址为："+host+"，请检查请求地址以及http/https协议是否正确，如果地址与协议都正确，表明该目的资源还没有发布，请联系管理员修改配置并发布此资源");
+        if(IsIPv4(remote_addr)){
+            errors.push("您正在使用IPv4地址进行访问("+remote_addr+")，目的资源没有对IPv4进行发布，请联系管理员修改配置并发布此资源");
+        }
+        if(IsIPv6(remote_addr)){
+            errors.push("您正在使用IPv6地址进行访问("+remote_addr+")，目的资源没有对IPv6进行发布，请联系管理员修改配置并发布此资源");
+        }
+        return errors;
+    }
+    var e = GetErrors();
+    var content = "";
+    for(var i in e){
+        content += "<li>"+e[i]+"</li>";
+    }
+    document.getElementById("reason").innerHTML = content;
+</script>
+</body>
+</html>
