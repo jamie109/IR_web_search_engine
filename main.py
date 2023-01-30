@@ -1,16 +1,28 @@
-# 这是一个示例 Python 脚本。
+import re
+import os
+import requests
+from bs4 import BeautifulSoup
+from string import punctuation
 
-# 按 Shift+F10 执行或将其替换为您的代码。
-# 按 双击 Shift 在所有地方搜索类、文件、工具窗口、操作和设置。
-
-
-def print_hi(name):
-    # 在下面的代码行中使用断点来调试脚本。
-    print(f'Hi, {name}')  # 按 Ctrl+F8 切换断点。
-
-
-# 按间距中的绿色按钮以运行脚本。
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# 访问 https://www.jetbrains.com/help/pycharm/ 获取 PyCharm 帮助
+html = requests.get('http://cc.nankai.edu.cn/jswyjy/list.htm', timeout=2)
+html.encoding = 'utf-8'
+soup = BeautifulSoup(html.text, 'lxml')
+    # 找到http://cc.nankai.edu.cn对应的id，因为一开始url_id_map是空的，这里就给添上了
+    #addr_id = url_id_map.__getitem__(cur)
+    # 找到了我想打开的文件夹
+    #html_title = html.title.string
+tmp = soup.find('title')
+html_title = tmp.text # str类型
+print(type(html_title))
+print(html_title)
+    # 去掉标题中的空格、标点符号
+    #教代会、工会委员会.txt
+print(html_title[2])
+print(type(html_title[2]))
+print(html_title[1])
+print(type(html_title[1]))
+# 忘记把返回值赋给html_title了
+# 好气哦，啊啊啊
+#html_title = html_title.replace("/", " ")
+html_title = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), '', html_title)
+print(html_title)
