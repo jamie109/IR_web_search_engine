@@ -109,7 +109,7 @@ def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
         #np.count_nonzero(tf_2D_arr[k][1:]
         idf_arr[k] = math.log((txt_num / tmp), 10)
         #idf_arr[k] = tmp
-    print(idf_arr)
+    #print(idf_arr)
     print('%% end compute idf')
     # 向量中的每一项用tf*idf来表示
     # 查询向量
@@ -117,7 +117,7 @@ def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
     for i in range(terms_num):
         query_vector = np.append(query_vector, idf_arr[i] * tf_2D_arr[i][0])
     print('%% end compute query_vector')
-    print(query_vector)
+    #print(query_vector)
     # 文档的查询向量，都存到一个列表中
     docs_vector = []
     for doc_num in range(txt_num):
@@ -125,7 +125,7 @@ def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
         for i in range(terms_num):
             doc_vector = np.append(doc_vector, idf_arr[i] * tf_2D_arr[i][doc_num + 1])
         docs_vector.append(doc_vector)
-    print(docs_vector)
+    #print(docs_vector)
     print('%% end compute docs_vector')
 
     # 计算余弦相似度Cosine similarity

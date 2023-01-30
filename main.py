@@ -1,4 +1,4 @@
-import spider
+
 import build_index
 import pickle
 
