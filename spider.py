@@ -4,11 +4,10 @@ import requests
 from bs4 import BeautifulSoup
 import IdMap
 from string import punctuation
-MAX_NUM = 15
-# 文件和id
-doc_id_map = IdMap.IdMap()  # doc to id
+from time import sleep
+import random
 
-url_id_map = IdMap.IdMap()  # url to id
+# MAX_NUM = 15
 
 cc_base_url = 'http://cc.nankai.edu.cn'
 # cur = 'http://cc.nankai.edu.cn'
@@ -16,16 +15,28 @@ cc_base_url = 'http://cc.nankai.edu.cn'
 # 已经爬取过的网页，用集合
 used_url_set = set()
 # 将要爬取的网页，用列表保存，因为集合无序，无法遍历
-to_use_url_list = ['https://cc.nankai.edu.cn/2022/1219/c13291a502413/page.htm']
+to_use_url_list = ['http://cc.nankai.edu.cn']
 
+# 这是需要登录、不在校园网内无法访问的url。爬不了的
+dustbin_set = [
+    'http://cc-backend.nankai.edu.cn',
+    'http://yzxt.nankai.edu.cn/intern/frontend/web/index.php'
+    ]
 
 def get_url_data(base_url, count):
     print("@ start crawl the web page", base_url)
+    if base_url in dustbin_set :
+        to_use_url_list.remove(base_url)
+        used_url_set.add(base_url)
+        print('无法爬取该页面//$^$//')
+
+        return count
+    # 返回爬取到的网页
     html = requests.get(base_url, timeout=5)
+    # 解决爬取网页乱码的问题
     html.encoding = 'utf-8'
+    # 从网页抓取数据。
     soup = BeautifulSoup(html.text, 'lxml')
-    # 找到http://cc.nankai.edu.cn对应的id，因为一开始url_id_map是空的，这里就给添上了
-    #addr_id = url_id_map.__getitem__(cur)
     # 找到了我想打开的文件夹
     #html_title = html.title.string
     tmp = soup.find('title')
@@ -41,7 +52,7 @@ def get_url_data(base_url, count):
     # 创建这个网页对应的文件，用来存储html文件
     #if not os.path.exists('dataset/web_data/' + html_title + '.txt'):
        # os.makedirs('dataset/web_data/' + html_title + '.txt')
-    doc_html = open(os.path.join('dataset/html_data/' + '_' + str(count) + '_' + html_title + '.html'), 'w', encoding='utf-8')
+    doc_html = open(os.path.join('dataset/html_data/' + '_' + str(count) + '_' + html_title + '.html'), 'w', encoding = 'utf-8')
     # 把这个网页（传进来的参数）内容填进去
     doc_html.write(html.text)
     doc_html.close()
@@ -50,8 +61,8 @@ def get_url_data(base_url, count):
     # context
     doc_context = open(os.path.join('dataset/web_data/' + '_' +str(count) + '_' + html_title + '.txt'), 'w', encoding='utf-8')
     # 把url写在第一行
-    tmp = base_url + '\n'
-    doc_context.write(tmp)
+    url_tmp = base_url + '\n'
+    doc_context.write(url_tmp)
     # print(">>>end write url")
     # 这个总链接（我爬虫的这个页面）的标题写进去
     data = soup.select('head')
@@ -135,6 +146,9 @@ if __name__ == '__main__':
             print("@ 爬取次数", i)
             tmp = to_use_url_list[0]
             mycount = get_url_data(tmp, mycount)
+            # 爬取网页 礼貌hh
+            # 休息一下。太慢了，不休息了
+            #sleep(random.randint(2, 3))
             #mycount = mycount + 1
 
     #print("要爬取的网页", to_use_url_list)
