@@ -52,11 +52,17 @@ def build_inverted_index():
     txt_words_list = []
     # 测试使用'./test_inverted_index/'
     # 运行使用'./dataset/web_data/'
-    for file_name in os.listdir('./test_inverted_index/'):
+    for file_name in os.listdir('./dataset/web_data/'):
+        # 找到输出跟输入查询词没有半毛钱关系的原因了，它读文件的时候不是按顺序读的
+        # 0 10 11 12.。。。18 19 1 20 21.。。
+        # 那我如果从10-99存文件呢？存到三位数、四位数好像还会出问题
+        # 我先试一试----读取文件顺序对了，输出跟查询输入还是对不上
+        #print(file_name)
         txt_num = txt_num + 1
-        with open('./test_inverted_index/' + file_name, 'r', encoding='utf-8') as f:
+        with open('./dataset/web_data/' + file_name, 'r', encoding='utf-8') as f:
             content = f.read()
         # 去掉标点符号、小写、分词
+
         content = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", content)
         content = content.lower()
         words = jieba.lcut_for_search(content)[0:cut_num]
@@ -79,6 +85,7 @@ def build_inverted_index():
             # if word not in term_list:
             #     term_list.append(word)
         f.close()
+    #print(txt_words_list[0:2])
     return inverted_index, txt_num, txt_words_list
 
 
@@ -96,7 +103,7 @@ def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
         for j in range(1, txt_num + 1):
             tf_2D_arr[i][j] = cal_tf(terms_list[i], txt_words_list[j - 1])
     #print('==============================================================')
-    print('%% end compute tf')
+    #print('%% end compute tf')
     #print(tf_2D_arr)
     # 每个词项在整个文档集合的逆向文件频率
     idf_arr = np.zeros(terms_num)
@@ -110,13 +117,13 @@ def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
         idf_arr[k] = math.log((txt_num / tmp), 10)
         #idf_arr[k] = tmp
     #print(idf_arr)
-    print('%% end compute idf')
+    #print('%% end compute idf')
     # 向量中的每一项用tf*idf来表示
     # 查询向量
     query_vector = np.array([])
     for i in range(terms_num):
         query_vector = np.append(query_vector, idf_arr[i] * tf_2D_arr[i][0])
-    print('%% end compute query_vector')
+    #print('%% end compute query_vector')
     #print(query_vector)
     # 文档的查询向量，都存到一个列表中
     docs_vector = []
@@ -126,7 +133,7 @@ def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
             doc_vector = np.append(doc_vector, idf_arr[i] * tf_2D_arr[i][doc_num + 1])
         docs_vector.append(doc_vector)
     #print(docs_vector)
-    print('%% end compute docs_vector')
+    #print('%% end compute docs_vector')
 
     # 计算余弦相似度Cosine similarity
     docs_cos_sim = []
@@ -140,7 +147,7 @@ def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
             cos_sim = num1 / num2
         docs_cos_sim.append(cos_sim)
 
-    max_cos_sim = max(docs_cos_sim)
+    #max_cos_sim = max(docs_cos_sim)
     indexes = max_index(docs_cos_sim)
     url_list = []
     for i in indexes:
@@ -148,15 +155,16 @@ def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
     print("query result is ......")
     print(url_list)
 
-if __name__ == '__main__':
-    query_str = input("请输入您的查询词项，如输入多个，请以空格分割:")
-    print("--------------------开始查询--------------------------")
-    inverted_index, txt_num, txt_words_list = build_inverted_index()
 
-    query(inverted_index, txt_words_list, txt_num, query_str)
-    # str = '4_计算机科学与技术系.txt'
-    # tmp = str.split('_')
-    # print(tmp)
-    #build_inverted_index()
-    # 打印倒排索引
-    print(inverted_index)
+# if __name__ == '__main__':
+#     query_str = input("请输入您的查询词项，如输入多个，请以空格分割:")
+#     print("--------------------开始查询--------------------------")
+#     inverted_index, txt_num, txt_words_list = build_inverted_index()
+#
+#     query(inverted_index, txt_words_list, txt_num, query_str)
+#     # str = '4_计算机科学与技术系.txt'
+#     # tmp = str.split('_')
+#     # print(tmp)
+#     #build_inverted_index()
+#     # 打印倒排索引
+#     print(inverted_index)

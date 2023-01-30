@@ -181,7 +181,7 @@ def spider():
     ]
     # 字典，记录1号对应哪个url，2号对应哪个url（1、2在文件标题中）
     url_id_dic = dict()
-    mycount = 0
+    mycount = 10
     for i in range(0, 200):
         if to_use_url_list is not None and mycount < 100:
             print("@ 爬取次数", i)
