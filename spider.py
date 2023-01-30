@@ -2,11 +2,10 @@ import re
 import os
 import requests
 from bs4 import BeautifulSoup
-import IdMap
 from string import punctuation
 from time import sleep
 import random
-
+#import Elasticsearch
 # MAX_NUM = 15
 
 cc_base_url = 'http://cc.nankai.edu.cn'
@@ -23,13 +22,23 @@ dustbin_set = [
     'http://yzxt.nankai.edu.cn/intern/frontend/web/index.php'
     ]
 
+# 字典，记录1号对应哪个url，2号对应哪个url（1、2在文件标题中）
+url_id_dic = dict()
+
+
 def get_url_data(base_url, count):
+    """
+    爬取url，并把内容保存到本地。
+    获取可能会用到的爬取链接。
+    :param base_url: 要爬取的链接
+    :param count: 如果爬取成功，这个url是第几个
+    :return: 下一个count
+    """
     print("@ start crawl the web page", base_url)
     if base_url in dustbin_set :
         to_use_url_list.remove(base_url)
         used_url_set.add(base_url)
         print('无法爬取该页面//$^$//')
-
         return count
     # 返回爬取到的网页
     html = requests.get(base_url, timeout=5)
@@ -52,17 +61,22 @@ def get_url_data(base_url, count):
     # 创建这个网页对应的文件，用来存储html文件
     #if not os.path.exists('dataset/web_data/' + html_title + '.txt'):
        # os.makedirs('dataset/web_data/' + html_title + '.txt')
-    doc_html = open(os.path.join('dataset/html_data/' + '_' + str(count) + '_' + html_title + '.html'), 'w', encoding = 'utf-8')
+    doc_html = open(os.path.join('dataset/html_data/' + str(count) + '_' + html_title + '.html'), 'w', encoding = 'utf-8')
     # 把这个网页（传进来的参数）内容填进去
     doc_html.write(html.text)
     doc_html.close()
     # print(">>>end write html")
     # 保存内容和标题
     # context
-    doc_context = open(os.path.join('dataset/web_data/' + '_' +str(count) + '_' + html_title + '.txt'), 'w', encoding='utf-8')
+    doc_context = open(os.path.join('dataset/web_data/' + str(count) + '_' + html_title + '.txt'), 'w', encoding='utf-8')
     # 把url写在第一行
+    """
     url_tmp = base_url + '\n'
     doc_context.write(url_tmp)
+    写入url不仅没用，还会影响我倒排索引，呵
+    但还是需要保存url跟count/txt文件标题的对应关系，因为最后要返回url链接
+    搞一个字典，比如1号对应哪个url，2号对应哪个url
+    """
     # print(">>>end write url")
     # 这个总链接（我爬虫的这个页面）的标题写进去
     data = soup.select('head')
@@ -126,6 +140,9 @@ def get_url_data(base_url, count):
         # num = num + 1
         # if num == 1:
         #      break
+
+    # 将该 url 加入 url_id_dic
+    url_id_dic[count] = base_url
     # print(">>>remove ", base_url, "from to_use_url_list to used_url_set")
     to_use_url_list.remove(base_url)
     used_url_set.add(base_url)
@@ -148,9 +165,9 @@ if __name__ == '__main__':
             mycount = get_url_data(tmp, mycount)
             # 爬取网页 礼貌hh
             # 休息一下。太慢了，不休息了
-            #sleep(random.randint(2, 3))
+            #sleep(random.randint(0, 1))
             #mycount = mycount + 1
-
+    print(url_id_dic)
     #print("要爬取的网页", to_use_url_list)
 
 
