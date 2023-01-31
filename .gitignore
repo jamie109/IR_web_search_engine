@@ -1,4 +1,3 @@
 # 忽略该文件夹下全部内容
-web_data/*
+dataset/
 # 忽略该文件夹下全部内容
-html_data/*
