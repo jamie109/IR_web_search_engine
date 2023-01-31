@@ -54,6 +54,8 @@ def title_query(path, query_str, url_id_dic):
     if os.path.exists(path):
         file_name_list = os.listdir(path)
         file_num = len(file_name_list)
+    # 按照文件名开头数字排序 解决了读取文件顺序的问题
+    file_name_list.sort(key=lambda x: int(x.split('_')[0]))
     # 标题列表
     title_dic = {}
     title_list = []
@@ -129,7 +131,7 @@ def title_query(path, query_str, url_id_dic):
     for i in range(5):
         tmp_i = file_num - 1 - i
         #print(rank, ':', title_dic[sorted_indexes[tmp_i]+10], url_id_dic[sorted_indexes[tmp_i]+10])
-        print(rank, ':', title_dic[sorted_indexes[tmp_i]], url_id_dic[sorted_indexes[tmp_i]])
+        print('@', rank, ':', title_dic[sorted_indexes[tmp_i]], url_id_dic[sorted_indexes[tmp_i]])
         rank = rank + 1
 
     print('The query has ended.Byebye~')
@@ -138,15 +140,35 @@ def title_query(path, query_str, url_id_dic):
 
 
 
+def test_read_files(path):
+    """
+    测试文件读取顺序的
+    :param path:
+    :return:
+    """
+    # 读取文档名到列表，计算文档数量
+    file_name_list = []
+    file_num = 0
+    if os.path.exists(path):
+        file_name_list = os.listdir(path)
+        file_num = len(file_name_list)
+    # 按照文件名开头数字排序
+    file_name_list.sort(key=lambda x: int(x.split('_')[0]))
+    for i in range(file_num):
+        print(file_name_list[i])
+
 
 if __name__ == '__main__':
     with open("dataset/url_id_dic.pkl", "rb") as tf:
         url_id_dic = pickle.load(tf)
-
-    query_str = input("请输入您的查询词项，如输入多个，请以空格分割:")
-    #files_path = './test_inverted_index/'
+    #query_str = input("请输入您的查询词项，如输入多个，请以空格分割:")
+    query_str = input("Please enter your query terms.\nIf you enter more than one, please separate them with spaces: ")
+    # 测试用的
+    files_path_test = './test_inverted_index/'
     files_path = './dataset/web_data/'
-    title_query(files_path,query_str, url_id_dic)
+    title_query(files_path, query_str, url_id_dic)
     # a = sorted_index([9,8,7,6,5])
     # for i in range(len(a)):
     #     print(a[i])
+
+    #test_read_files(files_path)

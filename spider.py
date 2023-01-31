@@ -67,6 +67,7 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
     html_title = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), '', html_title)
     if html_title == '404NotFound':
         print('>>>404 Not Found, return')
+        used_url_set.add(base_url)
         return count
 
     # 创建这个网页对应的文件，用来存储html文件
@@ -145,7 +146,8 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
                 url = cc_base_url + url
         # 如果这个href里有文件
         #print("完善后的url",  url)
-        if url not in used_url_set and 'nankai' in url:
+        #to_use_url_list中不能重复添加url
+        if url not in used_url_set and 'nankai' in url and url not in to_use_url_list:
             #print(">>> >>>add ", url ,"to to_use_url_list")
             to_use_url_list.append(url)
         # num = num + 1
