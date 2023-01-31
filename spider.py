@@ -24,7 +24,7 @@ import pickle
 # url_id_dic = dict()
 
 
-def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_base_url, dustbin_set):
+def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_base_url, dustbin_set, url_jump_dic, id_url_dic):
     """
     爬取url，并把内容保存到本地。
     获取可能会用到的爬取链接。
@@ -79,10 +79,13 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
     # 创建这个网页对应的文件，用来存储html文件
     #if not os.path.exists('dataset/web_data/' + html_title + '.txt'):
        # os.makedirs('dataset/web_data/' + html_title + '.txt')
+    """
+    目前没有用到html文件，占地儿太大，删掉
     doc_html = open(os.path.join('dataset/html_data/' + str(count) + '_' + html_title + '.html'), 'w', encoding = 'utf-8')
     # 把这个网页（传进来的参数）内容填进去
     doc_html.write(html.text)
     doc_html.close()
+    """
     # print(">>>end write html")
     # 保存内容和标题
     # context
@@ -123,6 +126,8 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
     # url_anc.write("+++ now is : " + cur + "\n")
     # 遍历这些超链接
     #num = 0
+    # 字典，每个url对应一个列表，列表中记录这个url可以跳转的其他url，字符串类型['url1','url2']
+    url_jump_dic[count] = []
     for item in data:
         #print("处理前", item)
         # get_text()函数用来获取tag(这里是item)中包含的文本内容
@@ -153,15 +158,19 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
         # 如果这个href里有文件
         #print("完善后的url",  url)
         #to_use_url_list中不能重复添加url
+
         if url not in used_url_set and 'nankai' in url and url not in to_use_url_list:
             #print(">>> >>>add ", url ,"to to_use_url_list")
             to_use_url_list.append(url)
+            # 添加到url跳转列表
+            url_jump_dic[count].append(url)
         # num = num + 1
         # if num == 1:
         #      break
 
     # 将该 url 加入 url_id_dic
     url_id_dic[count] = base_url
+    id_url_dic[base_url] = count
     # print(">>>remove ", base_url, "from to_use_url_list to used_url_set")
     to_use_url_list.remove(base_url)
     used_url_set.add(base_url)
@@ -191,12 +200,16 @@ def spider():
     ]
     # 字典，记录1号对应哪个url，2号对应哪个url（1、2在文件标题中）
     url_id_dic = dict()
+    # 字典，记录url对应的id
+    id_url_dic = dict()
+    # 字典 记录每个url页面可以跳转到的url们 用它们对应的数字id标识
+    url_jump_dic = dict()
     mycount = 0
     for i in range(0, 270):
         if to_use_url_list is not None and mycount < 241:
             print("@ 爬取网页个数：", i, "  爬取成功个数：", mycount)
             tmp = to_use_url_list[0]
-            mycount = get_url_data(tmp, mycount, url_id_dic, to_use_url_list, used_url_set, cc_base_url, dustbin_set)
+            mycount = get_url_data(tmp, mycount, url_id_dic, to_use_url_list, used_url_set, cc_base_url, dustbin_set, url_jump_dic, id_url_dic)
             # 爬取网页 礼貌hh
             # 休息一下。太慢了，不休息了
             # sleep(random.randint(0, 1))
@@ -205,6 +218,18 @@ def spider():
     with open("dataset/url_id_dic.pkl", "wb") as tf:
         pickle.dump(url_id_dic, tf)
     tf.close()
+
+    # 保存字典文件id_url_dic
+    with open("dataset/id_url_dic.pkl", "wb") as tf1:
+        pickle.dump(id_url_dic, tf1)
+    tf.close()
+
+    #print(url_jump_dic)
+    # 保存url跳转到的url记录
+    with open("dataset/url_jump_dic.pkl", "wb") as tf2:
+        pickle.dump(url_jump_dic, tf2)
+    tf2.close()
+
     #return url_id_dic
 
 if __name__ == '__main__':

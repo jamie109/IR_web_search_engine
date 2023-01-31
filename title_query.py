@@ -165,6 +165,7 @@ if __name__ == '__main__':
     files_path_test = './test_inverted_index/'
     files_path = './dataset/web_data/'
     title_query(files_path, query_str, url_id_dic)
+    tf.close()
     # a = sorted_index([9,8,7,6,5])
     # for i in range(len(a)):
     #     print(a[i])
