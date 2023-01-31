@@ -1,2 +1,4 @@
-dataset/web_data/*.txt
-dateset/html_data/*.html
+# 忽略该文件夹下全部内容
+web_data/*
+# 忽略该文件夹下全部内容
+html_data/*
