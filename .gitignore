@@ -1,2 +1,2 @@
-dataset/web_data
-dateset/html_data
+dataset/web_data/*.txt
+dateset/html_data/*.html
