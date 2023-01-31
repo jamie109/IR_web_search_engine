@@ -45,6 +45,12 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
         print('login 无法爬取该页面//$^$//')
         return count
 
+    if "_redirect" in base_url:
+        to_use_url_list.remove(base_url)
+        used_url_set.add(base_url)
+        print('_redirect 不爬取该页面//$^$//')
+        return count
+
     # 返回爬取到的网页
     html = requests.get(base_url, timeout=5)
     # 解决爬取网页乱码的问题
@@ -180,14 +186,15 @@ def spider():
         'http://eamis.nankai.edu.cn/eams/login.action',
         'http://nkoa.nankai.edu.cn/login/Login.jsp?logintype=1',
         'http://cc.nankai.edu.cn/_redirect?siteId=234&columnId=13481&articleId=153604',
-        'http://ms.nankai.edu.cn/me/index.aspx'
+        'http://ms.nankai.edu.cn/me/index.aspx',
+        'http://mc.nankai.edu.cn/'
     ]
     # 字典，记录1号对应哪个url，2号对应哪个url（1、2在文件标题中）
     url_id_dic = dict()
     mycount = 0
-    for i in range(0, 200):
-        if to_use_url_list is not None and mycount < 100:
-            print("@ 爬取次数", i)
+    for i in range(0, 270):
+        if to_use_url_list is not None and mycount < 241:
+            print("@ 爬取网页个数：", i, "  爬取成功个数：", mycount)
             tmp = to_use_url_list[0]
             mycount = get_url_data(tmp, mycount, url_id_dic, to_use_url_list, used_url_set, cc_base_url, dustbin_set)
             # 爬取网页 礼貌hh

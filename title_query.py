@@ -20,8 +20,8 @@ def cal_tf(term, a_doc):
         #print(t)
         if t == term:
             count += 1
-    #return math.log(count + 1, 10)
-    return count
+    return math.log(count + 1, 10)
+    #return count
 
 
 def max_index(lst):
@@ -64,8 +64,7 @@ def title_query(path, query_str, url_id_dic):
     for i in range(file_num):
         #print(file_name_list[i])
         tmp = file_name_list[i].split('_')[1][:-4]
-
-        tmp =re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", tmp)
+        tmp = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", tmp)
         tmp = tmp.lower()
         words = jieba.lcut_for_search(tmp)[0:cut_num]
         title_terms_list.extend(words)
@@ -102,8 +101,7 @@ def title_query(path, query_str, url_id_dic):
     query_vector = np.array([])
     for i in range(title_terms_num):
         query_vector = np.append(query_vector, idf_arr[i] * tf_2D_arr[i][0])
-        # print(query_vector)
-
+    # print(query_vector)
     # 文档的查询向量，都存到一个列表中
     docs_vector = []
     for doc_num in range(file_num):
@@ -112,7 +110,6 @@ def title_query(path, query_str, url_id_dic):
             doc_vector = np.append(doc_vector, idf_arr[i] * tf_2D_arr[i][doc_num + 1])
         docs_vector.append(doc_vector)
     # print(docs_vector)
-
     # 计算余弦相似度Cosine similarity
     docs_cos_sim = []
     for i in range(file_num):
@@ -124,6 +121,7 @@ def title_query(path, query_str, url_id_dic):
         else:
             cos_sim = num1 / num2
         docs_cos_sim.append(cos_sim)
+    #print(docs_cos_sim)
     #indexes = max_index(docs_cos_sim)
     sorted_indexes = sorted_index(docs_cos_sim)
     print("The top five query results are as follows————")
