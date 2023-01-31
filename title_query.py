@@ -60,14 +60,16 @@ def title_query(path, query_str, url_id_dic):
     title_terms_list = []
     titles_term_for_txt = []
     for i in range(file_num):
+        #print(file_name_list[i])
         tmp = file_name_list[i].split('_')[1][:-4]
-        #print(tmp)
+
         tmp =re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", tmp)
         tmp = tmp.lower()
         words = jieba.lcut_for_search(tmp)[0:cut_num]
         title_terms_list.extend(words)
         #title_dic[tmp] = i + 10
-        title_dic[i+10] = tmp
+        #title_dic[i+10] = tmp
+        title_dic[i] = tmp
         titles_term_for_txt.append(words)
         #print(titles_term_for_txt[i])
         #title_list.append(tmp)
@@ -126,7 +128,8 @@ def title_query(path, query_str, url_id_dic):
     rank = 1
     for i in range(5):
         tmp_i = file_num - 1 - i
-        print(rank, ':',title_dic[sorted_indexes[tmp_i]+10], url_id_dic[sorted_indexes[tmp_i]+10])
+        #print(rank, ':', title_dic[sorted_indexes[tmp_i]+10], url_id_dic[sorted_indexes[tmp_i]+10])
+        print(rank, ':', title_dic[sorted_indexes[tmp_i]], url_id_dic[sorted_indexes[tmp_i]])
         rank = rank + 1
 
     print('The query has ended.Byebye~')

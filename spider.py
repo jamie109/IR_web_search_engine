@@ -177,11 +177,12 @@ def spider():
         'http://online.nankai.edu.cn/nk_portal/index',
         'http://eamis.nankai.edu.cn/eams/login.action',
         'http://nkoa.nankai.edu.cn/login/Login.jsp?logintype=1',
-        'http://cc.nankai.edu.cn/_redirect?siteId=234&columnId=13481&articleId=153604'
+        'http://cc.nankai.edu.cn/_redirect?siteId=234&columnId=13481&articleId=153604',
+        'http://ms.nankai.edu.cn/me/index.aspx'
     ]
     # 字典，记录1号对应哪个url，2号对应哪个url（1、2在文件标题中）
     url_id_dic = dict()
-    mycount = 10
+    mycount = 0
     for i in range(0, 200):
         if to_use_url_list is not None and mycount < 100:
             print("@ 爬取次数", i)
