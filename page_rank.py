@@ -5,6 +5,10 @@ import networkx
 PGRANK_ADJUST_PARAM = 1e4
 
 def get_pagerank():
+    """
+    把权重写到本地文件了
+    :return: 不需要返回，用到时直接读取本地文件即可
+    """
     # 打开url跳转字典
     url_jump_dic = dict()
     with open("dataset/url_jump_dic.pkl", "rb") as tf:
@@ -30,7 +34,6 @@ def get_pagerank():
     with open("dataset/id_pagerank_dic.pkl", "wb") as tf2:
         pickle.dump(my_page_rank, tf2)
     print("write pagerank dict finish")
-
     tf.close()
     tf1.close()
     tf2.close()

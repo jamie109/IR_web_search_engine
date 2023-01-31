@@ -36,7 +36,14 @@ def max_index(lst):
             index.append(i)
     return index  #返回一个列表
 
+
 def sorted_index(lst):
+    """
+    辅助函数，我觉得它可以用在计算完网页和查询的总相关性（pagerank 标题余弦相似度 内容倒排索引等等加起来）
+    返回相关性由低到高的索引(url对应的id)
+    :param lst: 列表
+    :return: 根据元素进行排序的索引数组
+    """
     sorted_indexes = []
     tmp = np.array(lst)
     # 返回根据元素由小到大排序的索引数组
@@ -45,7 +52,14 @@ def sorted_index(lst):
     #print(sorted_indexes)
     return sorted_indexes
 
+
 def title_query(path, query_str, url_id_dic):
+    """
+    进行查询输入跟标题的查询，保存余弦相似度字典到本地（id对应的）
+    :param path: 网页内容txt路径
+    :param query_str: 要查询的内容，字符串格式，空格隔开
+    :param url_id_dic: 根据id查找url的字典
+    """
     print("Query is in progress, please wait......")
     cut_num = 400
     file_num = 0
@@ -56,7 +70,7 @@ def title_query(path, query_str, url_id_dic):
         file_num = len(file_name_list)
     # 按照文件名开头数字排序 解决了读取文件顺序的问题
     file_name_list.sort(key=lambda x: int(x.split('_')[0]))
-    # 标题列表
+    # 标题字典，根据id查找标题
     title_dic = {}
     title_list = []
     title_terms_list = []
@@ -75,6 +89,10 @@ def title_query(path, query_str, url_id_dic):
         #print(titles_term_for_txt[i])
         #title_list.append(tmp)
     #print(len(title_terms_list))
+    # 根据id查找标题字典保存到本地，输出查询结果时会用到
+    with open("dataset/title_id_dic.pkl", "wb") as tf:
+        pickle.dump(title_dic, tf)
+    tf.close()
     # 借助集合去重
     title_terms_list = list(set(title_terms_list))
     title_terms_num = len(title_terms_list)
@@ -123,6 +141,8 @@ def title_query(path, query_str, url_id_dic):
         docs_cos_sim.append(cos_sim)
     #print(docs_cos_sim)
     #indexes = max_index(docs_cos_sim)
+    """
+    用来测试标题查询
     sorted_indexes = sorted_index(docs_cos_sim)
     print("The top five query results are as follows————")
     rank = 1
@@ -135,6 +155,16 @@ def title_query(path, query_str, url_id_dic):
     print('The query has ended.Byebye~')
     #print(title_dic)
     #print(type(title_dic.keys())) <class 'dict_keys'>
+    """
+    # 改成字典
+    title_cos_sim_dic = dict()
+    for i in range(file_num):
+        title_cos_sim_dic[i] = docs_cos_sim[i]
+    #print(title_cos_sim_dic)
+    # 标题余弦相似度字典保存到本地
+    with open("dataset/title_cos_sim_dic.pkl", "wb") as tf1:
+        pickle.dump(title_cos_sim_dic, tf1)
+    tf1.close()
 
 
 
@@ -164,7 +194,8 @@ if __name__ == '__main__':
     # 测试用的
     files_path_test = './test_inverted_index/'
     files_path = './dataset/web_data/'
-    title_query(files_path, query_str, url_id_dic)
+    my_docs_cos_sim = title_query(files_path, query_str, url_id_dic)
+    #print(my_docs_cos_sim)
     tf.close()
     # a = sorted_index([9,8,7,6,5])
     # for i in range(len(a)):

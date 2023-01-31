@@ -33,7 +33,7 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
     :return: 下一个count
     """
     print("@ start crawl the web page", base_url)
-    if base_url in dustbin_set :
+    if base_url in dustbin_set:
         to_use_url_list.remove(base_url)
         used_url_set.add(base_url)
         print('无法爬取该页面//$^$//')
@@ -229,8 +229,8 @@ def spider():
     with open("dataset/url_jump_dic.pkl", "wb") as tf2:
         pickle.dump(url_jump_dic, tf2)
     tf2.close()
-
     #return url_id_dic
+
 
 if __name__ == '__main__':
     spider()
