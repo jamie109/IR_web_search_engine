@@ -15,7 +15,13 @@ def cal_tf(term, a_doc):
     count = 0
     # print(type(a_doc))
     if type(a_doc) == type('abd'):
-        a_doc = a_doc.split(' ')
+        # 去标点、小写、分词
+        a_doc = a_doc.replace(' ', '')
+        content = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", a_doc)
+        content = content.lower()
+        a_doc = jieba.lcut_for_search(content)[0:10]
+
+        #a_doc = a_doc.split(' ')
     for t in a_doc:
         #print(t)
         if t == term:
@@ -37,30 +43,30 @@ def max_index(lst):
     return index  #返回一个列表
 
 
-def sorted_index(lst):
+def sorted_index(array):
     """
     辅助函数，我觉得它可以用在计算完网页和查询的总相关性（pagerank 标题余弦相似度 内容倒排索引等等加起来）
     返回相关性由低到高的索引(url对应的id)
-    :param lst: 列表
+    :param lst: np数组
     :return: 根据元素进行排序的索引数组
     """
     sorted_indexes = []
-    tmp = np.array(lst)
     # 返回根据元素由小到大排序的索引数组
-    sorted_indexes = np.argsort(tmp)
+    sorted_indexes = np.argsort(array)
     #print(type(sorted_indexes))
     #print(sorted_indexes)
     return sorted_indexes
 
 
-def title_query(path, query_str, url_id_dic):
+def title_query(query_str):
     """
     进行查询输入跟标题的查询，保存余弦相似度字典到本地（id对应的）
     :param path: 网页内容txt路径
     :param query_str: 要查询的内容，字符串格式，空格隔开
     :param url_id_dic: 根据id查找url的字典
     """
-    print("Query is in progress, please wait......")
+    #print("Query is in progress, please wait......")
+    path = 'dataset/web_data/'
     cut_num = 400
     file_num = 0
     file_name_list = []
@@ -156,15 +162,11 @@ def title_query(path, query_str, url_id_dic):
     #print(title_dic)
     #print(type(title_dic.keys())) <class 'dict_keys'>
     """
-    # 改成字典
-    title_cos_sim_dic = dict()
-    for i in range(file_num):
-        title_cos_sim_dic[i] = docs_cos_sim[i]
-    #print(title_cos_sim_dic)
-    # 标题余弦相似度字典保存到本地
-    with open("dataset/title_cos_sim_dic.pkl", "wb") as tf1:
-        pickle.dump(title_cos_sim_dic, tf1)
+
+    with open("dataset/title_cos_sim_list.pkl", "wb") as tf1:
+        pickle.dump(docs_cos_sim, tf1)
     tf1.close()
+    return docs_cos_sim
 
 
 
