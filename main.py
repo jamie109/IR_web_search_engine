@@ -2,7 +2,7 @@ import build_index
 import content_inverted_index
 import pickle
 import title_query
-file_num = 241
+file_num = 250
 from content_inverted_index import Invert_term
 import math
 from sklearn import preprocessing
@@ -96,13 +96,13 @@ if __name__ == '__main__':
         pagerank_dic = pickle.load(tf)
     pagerank_list = list(pagerank_dic.values())
 
-    print("title only")
-    get_final_result(title_result_list)
-    print("content only")
-    get_final_result(content_result_list)
-    print("title and content")
+    # print("title only")
+    # get_final_result(title_result_list)
+    # print("content only")
+    # get_final_result(content_result_list)
+    # print("title and content")
     title_content = np.array(content_result_list) * 0.1 + np.array(title_result_list)
-    get_final_result(title_content)
+    # get_final_result(title_content)
     title_content_pagerank = title_content + np.array(pagerank_list)
     print('title_content_pagerank')
     get_final_result(title_content_pagerank)

@@ -52,7 +52,7 @@ def build_inverted_index():
         with open(path + file_name_list[i], 'r', encoding='utf-8') as f:
             content = f.read()
         # 去标点、小写、分词
-        content = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", content)
+        content = re.sub(r"[{}、，。！？·【】）》；;《“”（-：——]+".format(punctuation), "", content)
         content = content.lower()
         words = jieba.lcut_for_search(content)[0:cut_num]
         # if i == 7:
