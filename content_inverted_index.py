@@ -10,6 +10,7 @@ def get_stopwords_list():
     hit_stopwords = [line.strip() for line in open(r'hit_stopwords.txt',encoding='UTF-8').readlines()]
     return hit_stopwords
 
+
 def sorted_index(lst):
     """
     辅助函数，我觉得它可以用在计算完网页和查询的总相关性（pagerank 标题余弦相似度 内容倒排索引等等加起来）
@@ -77,7 +78,6 @@ def build_inverted_index():
         pickle.dump(inverted_index_dic, tf)
     print('store inverted_index_dic end')
     tf.close()
-
     return  file_num
 
 
@@ -102,7 +102,7 @@ def content_query(file_num, query_str):
                 else:
                     content_query_dic[txt_id] = content_query_dic[txt_id] + 1
 
-    print('内容查询结果：', content_query_dic)
+    #print('内容查询结果：', content_query_dic)
     # 倒排字典存到本地
     with open("dataset/content_query_dic.pkl", "wb") as tf1:
         pickle.dump(content_query_dic, tf1)
@@ -139,3 +139,4 @@ if __name__ == '__main__':
     tf.close()
     tf1.close()
     print('The query has ended.Byebye~')
+
