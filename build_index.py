@@ -4,7 +4,7 @@ import re
 from string import punctuation
 import math
 import numpy as np
-
+import pickle
 
 def cal_tf(term, a_doc):
     """
@@ -37,6 +37,21 @@ def max_index(lst):
             index.append(i)
     return index  #返回一个列表
 
+def sorted_index(lst):
+    """
+    辅助函数，我觉得它可以用在计算完网页和查询的总相关性（pagerank 标题余弦相似度 内容倒排索引等等加起来）
+    返回相关性由低到高的索引(url对应的id)
+    :param lst: 列表
+    :return: 根据元素进行排序的索引数组
+    """
+    sorted_indexes = []
+    tmp = np.array(lst)
+    # 返回根据元素由小到大排序的索引数组
+    sorted_indexes = np.argsort(tmp)
+    #print(type(sorted_indexes))
+    #print(sorted_indexes)
+    return sorted_indexes
+
 
 def build_inverted_index():
     """
@@ -52,15 +67,27 @@ def build_inverted_index():
     txt_words_list = []
     # 测试使用'./test_inverted_index/'
     # 运行使用'./dataset/web_data/'
-    for file_name in os.listdir('./dataset/web_data/'):
+    # 读取文档名到列表，计算文档数量
+    path = './dataset/web_data/'
+    file_name_list = []
+    file_num = 0
+    if os.path.exists(path):
+        file_name_list = os.listdir(path)
+        file_num = len(file_name_list)
+    # 按照文件名开头数字排序 解决了读取文件顺序的问题
+    file_name_list.sort(key=lambda x: int(x.split('_')[0]))
+    for i in range(file_num):
+        with open(path + file_name_list[i], 'r', encoding='utf-8') as f:
+            content = f.read()
+    #for file_name in os.listdir('./dataset/web_data/'):
         # 找到输出跟输入查询词没有半毛钱关系的原因了，它读文件的时候不是按顺序读的
         # 0 10 11 12.。。。18 19 1 20 21.。。
         # 那我如果从10-99存文件呢？存到三位数、四位数好像还会出问题
         # 我先试一试----读取文件顺序对了，输出跟查询输入还是对不上
         #print(file_name)
         txt_num = txt_num + 1
-        with open('./dataset/web_data/' + file_name, 'r', encoding='utf-8') as f:
-            content = f.read()
+        #with open('./dataset/web_data/' + file_name, 'r', encoding='utf-8') as f:
+            #content = f.read()
         # 去掉标点符号、小写、分词
 
         content = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", content)
@@ -74,7 +101,7 @@ def build_inverted_index():
         #words = content.split()
         # 构建倒排索引
         # （0_计算机学院主页.txt ）是爬取的第几个url，可根据tmp获取url
-        tmp = int(file_name.split('_')[0])
+        tmp = int(file_name_list[i].split('_')[0])
         for word in words:
             #print(word)
             if word not in inverted_index:
@@ -148,12 +175,25 @@ def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
         docs_cos_sim.append(cos_sim)
 
     #max_cos_sim = max(docs_cos_sim)
-    indexes = max_index(docs_cos_sim)
-    url_list = []
-    for i in indexes:
-        url_list.append(url_id_dic[i])
-    print("query result is ......")
-    print(url_list)
+    sorted_indexes = sorted_index(docs_cos_sim)
+    print("The top five query results are as follows————")
+    title_dic = dict()
+    with open("dataset/title_id_dic.pkl", "rb") as tf:
+        title_dic = pickle.load(tf)
+    rank = 1
+    for i in range(5):
+        tmp_i = txt_num - 1 - i
+        # print(rank, ':', title_dic[sorted_indexes[tmp_i]+10], url_id_dic[sorted_indexes[tmp_i]+10])
+        print('@', rank, ':', title_dic[sorted_indexes[tmp_i]], url_id_dic[sorted_indexes[tmp_i]])
+        rank = rank + 1
+    tf.close()
+    print('The query has ended.Byebye~')
+    # indexes = max_index(docs_cos_sim)
+    # url_list = []
+    # for i in indexes:
+    #     url_list.append(url_id_dic[i])
+    # print("query result is ......")
+    # print(url_list)
 
 
 # if __name__ == '__main__':
