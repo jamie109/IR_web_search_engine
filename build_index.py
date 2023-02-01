@@ -188,6 +188,15 @@ def query(inverted_index, txt_words_list, txt_num, query_str, url_id_dic):
         rank = rank + 1
     tf.close()
     print('The query has ended.Byebye~')
+    # 改成字典
+    content_cos_sim_dic = dict()
+    for i in range(txt_num):
+        content_cos_sim_dic[i] = docs_cos_sim[i]
+    # print(title_cos_sim_dic)
+    # 内容余弦相似度字典保存到本地
+    with open("dataset/content_cos_sim_dic.pkl", "wb") as tf1:
+        pickle.dump(content_cos_sim_dic, tf1)
+    tf1.close()
     # indexes = max_index(docs_cos_sim)
     # url_list = []
     # for i in indexes:
