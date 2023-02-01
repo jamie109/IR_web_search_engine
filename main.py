@@ -11,6 +11,7 @@ import re
 from string import  punctuation
 import numpy as np
 import page_rank
+import datetime
 
 def content_query(file_num, query_str):
     # 加载倒排字典
@@ -75,6 +76,12 @@ def get_final_result(result_list):
 
 if __name__ == '__main__':
     query_str = input('Please enter your query content: ')
+    # 查询日志
+    now_time = str(datetime.datetime.now())
+    query_log = '[' + now_time + '] query_str:' + query_str + '\n'
+    with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
+        f.write(query_log)
+    f.close()
     print("--------------------start query--------------------------")
     # content
     content_result_list = content_query(file_num, query_str)
@@ -83,12 +90,11 @@ if __name__ == '__main__':
     title_result_list = title_query.title_query(query_str)
     #print(title_result_list)
     #print(sorted(title_result_list))
+
     # pagerank
     with open("dataset/id_pagerank_dic.pkl", "rb") as tf:
         pagerank_dic = pickle.load(tf)
-
     pagerank_list = list(pagerank_dic.values())
-
 
     print("title only")
     get_final_result(title_result_list)
