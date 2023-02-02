@@ -378,6 +378,24 @@ def sign_up(flag, parent):
     parent.destroy()
 
 
+def login_jump_query(user_name_entry, parent):
+    jump_to_query = Tk()
+    jump_to_query.title('In-station or wildcard?')
+    jump_to_query.geometry("350x300+400+200")
+    # 站内查询
+    Label(jump_to_query, text='Choose in-station query:', font="微软雅黑 14").grid(row=0,
+                                                    column=0, columnspan=2, sticky="w", pady=10)
+    Button(jump_to_query, text="In-station query", font="楷体 14", relief="raised",
+           command=lambda: query(flag=False, user_name=user_name_entry, user_age=None, user_sex=None,
+                                 parent=jump_to_query)).grid(row=1, column=0, columnspan=2, pady=20)
+
+    # 通配查询
+    Label(jump_to_query, text='\nChoose wildcard query:', font="微软雅黑 14"
+          ).grid(row=2, column=0, columnspan=2, sticky="w", pady=10)
+    Button(jump_to_query, text="Wildcard query", font="楷体 14", relief="raised",
+           command=lambda: wildcard_query(user_name_entry, jump_to_query)).grid(row=3, column=0, columnspan=2, pady=20)
+    #parent.destroy()
+
 def check_info(e1, parent):
     """
     检验用户先前是否注册过，如没有注册过，转到注册界面
@@ -421,7 +439,8 @@ def check_info(e1, parent):
         # parent.destroy()
         # check_info_suc = Tk()
         # check_info_suc.title('Login success')
-        query(flag = False, user_name = e1, user_age = None, user_sex = None, parent = parent)
+        login_jump_query(e1, parent)
+        #query(flag = False, user_name = e1, user_age = None, user_sex = None, parent = parent)
         # 登录日志
         now_time = str(datetime.datetime.now())[0:-7]
         query_log = '[' + now_time + '] ' + 'OP: log in, ' + 'user_name:@' + user_name + '\n'
