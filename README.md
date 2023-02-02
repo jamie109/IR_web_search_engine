@@ -167,11 +167,12 @@ def proc_wildcard(words_list, str_with_wildcard):
 * 我在一个Tk()窗口，点击某个按钮或者做了什么操作，需要弹出一个消息窗口如tkinter.messagebox.showinfo(message="消息")，直接把showinfo加进去，
 它不仅会弹出这个消息提示框还会弹出一个空的Tk()窗口。解决方法是在tkinter.messagebox.showinfo函数前加两行代码。
 
-``python
+```python
  # 解决出现两个弹窗的问题
-    root = Tk()
-    root.withdraw()
-``
+from tkinter import *
+root = Tk()
+root.withdraw()
+```
 
 * 窗口中输入的信息无法在该窗口函数中保存，因为此时它是空的。比如有一个sign_in函数，在这个函数里，建了一个Tk()窗口，它有输入控件，
 如果我在这个sign_in函数窗口对象的后面，直接写代码要保存输入的内容，比如user_name = e1.get()（e1是个输入空间），此时user_name 就是一个
