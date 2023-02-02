@@ -14,6 +14,7 @@ import page_rank
 import datetime
 import tkinter
 from tkinter import *
+from tkinter import messagebox
 
 # 全局，不作为参数输入
 my_user_term = None
@@ -226,7 +227,7 @@ def query_result_view(query_str_entry, user_name_str, parent):
 
 def query(flag, user_name, user_age, user_sex, parent):
     """
-    输入查询字符串
+    输入查询字符串，站内查询
     :param flag:是否需要保存用户信息
     :param user_name:用户名输入控件
     :param user_age:年龄	输入控件
@@ -236,44 +237,105 @@ def query(flag, user_name, user_age, user_sex, parent):
     """
     user_name_str = user_name.get()
     # 从sign up跳过来的，需要保存用户信息
-    if flag:
-        # 创建用户信息
-        print('@create user info')
-        print(f'name = {user_name.get()}')
-        if user_age.get() == '':
-            print('age = 0')
-            user_age_int = 0
-        else:
-            user_age_int = int(user_age.get())
-            print(f'age = {user_age_int}')
-        print(f'sex = {user_sex.get()}')
-        create_user_term = user_term(user_name.get(), user_age_int, user_sex.get())
-        # 加入用户信息字典，保存
-        print('add user info to users_info_dic.pkl')
-        users_info_dic[user_name.get()] = create_user_term
-        with open("dataset/users_info_dic.pkl", "wb") as t:
-            pickle.dump(users_info_dic, t)
-        t.close()
-        print(f'@Congratulations,{user_name.get()}! The registration is successful.')
-        # 注册日志
-        now_time = str(datetime.datetime.now())[0:-7]
-        query_log = '[' + now_time + '] ' + 'OP: sign up, ' + 'user_name:@' + user_name.get() + ', user_age:' + str(user_age_int) + ', user_sex:' + user_sex.get()+ '\n'
-        with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
-            f.write(query_log)
-        f.close()
-        print('@ write user registration information log over.')
+    # if flag:
+    #     # 创建用户信息
+    #     print('@create user info')
+    #     print(f'name = {user_name.get()}')
+    #     if user_age.get() == '':
+    #         print('age = 0')
+    #         user_age_int = 0
+    #     else:
+    #         user_age_int = int(user_age.get())
+    #         print(f'age = {user_age_int}')
+    #     print(f'sex = {user_sex.get()}')
+    #     create_user_term = user_term(user_name.get(), user_age_int, user_sex.get())
+    #     # 加入用户信息字典，保存
+    #     print('add user info to users_info_dic.pkl')
+    #     users_info_dic[user_name.get()] = create_user_term
+    #     with open("dataset/users_info_dic.pkl", "wb") as t:
+    #         pickle.dump(users_info_dic, t)
+    #     t.close()
+    #     print(f'@Congratulations,{user_name.get()}! The registration is successful.')
+    #     # 注册日志
+    #     now_time = str(datetime.datetime.now())[0:-7]
+    #     query_log = '[' + now_time + '] ' + 'OP: sign up, ' + 'user_name:@' + user_name.get() + ', user_age:' + str(user_age_int) + ', user_sex:' + user_sex.get()+ '\n'
+    #     with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
+    #         f.write(query_log)
+    #     f.close()
+    #     print('@ write user registration information log over.')
     # 查询
     query_start = Tk()
-    query_start.title('query')
+    query_start.title('In-station query')
     query_start.geometry("350x200+400+200")
     input_query_str_entry = Entry(query_start, width=30)
     Label(query_start, text='\n Input query statement:', font="微软雅黑 14").grid(row=0, column=0, columnspan=2, sticky="w",
                                                                     pady=10)
     input_query_str_entry.grid(row=1, column=0, sticky="e", padx=20)
     Button(query_start, text='View query results', font="宋体 14", relief="raised",
-           command= lambda :query_result_view(input_query_str_entry, user_name_str, parent)).grid(row=2, column=0, columnspan=2,
+           command=lambda:query_result_view(input_query_str_entry, user_name_str, parent)).grid(row=2, column=0, columnspan=2,
                                                                                     pady=20)
-    parent.destroy()
+    #parent.destroy()
+
+
+def wildcard_query(user_name, parent):
+    """
+    通配查询
+    :param user_name:
+    :param parent:
+    :return:
+    """
+    user_name_str = user_name.get()
+    wildcard_query_start = Tk()
+    wildcard_query_start.title('wildcard query')
+    wildcard_query_start.geometry("350x300+400+200")
+    input_query_str_entry = Entry(wildcard_query_start, width=30)
+    Label(wildcard_query_start, text='\n "?" match a character', font="微软雅黑 14").grid(row=0, column=0, columnspan=2, sticky="w",
+                                                                              pady=10)
+    Label(wildcard_query_start,
+          text='"*" Matches any character sequence',font="微软雅黑 14").grid(row=1, column=0, columnspan=2, sticky="w",
+                               pady=10)
+    Label(wildcard_query_start,
+          text=' Input query statement:',font="微软雅黑 14").grid(row=2, column=0, columnspan=2, sticky="w",
+                               pady=10)
+
+    input_query_str_entry.grid(row=3, column=0, sticky="e", padx=20)
+    Button(wildcard_query_start, text='View query results', font="宋体 14", relief="raised",
+           command=lambda: query_result_view(input_query_str_entry, user_name_str, parent)).grid(row=4, column=0,
+                                                                                                 columnspan=2,
+                                                                                                 pady=20)
+
+def save_info(user_name, user_age, user_sex, parent):
+    # 解决出现两个弹窗的问题
+    root = Tk()
+    root.withdraw()
+    # 创建用户信息
+    user_name_str = user_name.get()
+    print(f'@create user info for {user_name_str}')
+    print(f'name = {user_name.get()}')
+    if user_age.get() == '':
+        print('age = 0')
+        user_age_int = 0
+    else:
+        user_age_int = int(user_age.get())
+        print(f'age = {user_age_int}')
+    print(f'sex = {user_sex.get()}')
+    create_user_term = user_term(user_name.get(), user_age_int, user_sex.get())
+    # 加入用户信息字典，保存
+    print('add user info to users_info_dic.pkl')
+    users_info_dic[user_name.get()] = create_user_term
+    with open("dataset/users_info_dic.pkl", "wb") as t:
+        pickle.dump(users_info_dic, t)
+    t.close()
+    print(f'@Congratulations,{user_name.get()}! The registration is successful.')
+    # 注册日志
+    now_time = str(datetime.datetime.now())[0:-7]
+    query_log = '[' + now_time + '] ' + 'OP: sign up, ' + 'user_name:@' + user_name.get() + ', user_age:' + str(
+        user_age_int) + ', user_sex:' + user_sex.get() + '\n'
+    with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
+        f.write(query_log)
+    f.close()
+    print('@ write user registration information log over.')
+    tkinter.messagebox.showinfo(message="The registration is successful.")
 
 
 def sign_up(flag, parent):
@@ -285,22 +347,28 @@ def sign_up(flag, parent):
     """
     signup = Tk()
     signup.title('sign up')
-    signup.geometry("350x350+400+200")
+    signup.geometry("350x440+400+200")
     user_name = Entry(signup, width=30)
     user_age = Entry(signup, width=30)
     user_sex = Entry(signup, width=30)
-    Label(signup, text='\n  Enter your name:', font="微软雅黑 14").grid(row=0, column=0, columnspan=2, sticky="w",
+    Label(signup, text='\n  Enter your name:', font="微软雅黑 12").grid(row=0, column=0, columnspan=2, sticky="w",
                                                                    pady=10)
-    user_name.grid(row=1, column=1, sticky="e", padx=20)
-    Label(signup, text='  Enter your age:', font="微软雅黑 14").grid(row=2, column=0, columnspan=2, sticky="w",
+    user_name.grid(row=1, column=1, sticky="e", padx=30)
+    Label(signup, text='  Enter your age:', font="微软雅黑 12").grid(row=2, column=0, columnspan=2, sticky="w",
                                                                     pady=10)
-    user_age.grid(row=3, column=1, sticky="e", padx=20)
-    Label(signup, text='  Enter your sex(male or female):', font="微软雅黑 14").grid(row=4, column=0, columnspan=2, sticky="w",
+    user_age.grid(row=3, column=1, sticky="e", padx=30)
+    Label(signup, text='  Enter your sex(male or female):', font="微软雅黑 12").grid(row=4, column=0, columnspan=2, sticky="w",
                                                                     pady=10)
-    user_sex.grid(row=5, column=1, sticky="e", padx=20)
-
-    Button(signup, text='OK,jump to the query interface!', font="宋体 14", relief="raised",
-           command=lambda: query(flag, user_name, user_age, user_sex, signup)).grid(row=6, column=0, columnspan=2, pady=20)
+    user_sex.grid(row=5, column=1, sticky="e", padx=30)
+    #保存注册信息
+    Button(signup, text='save info', font="楷体 10", relief="raised",
+           command=lambda: save_info(user_name, user_age, user_sex, signup)).grid(row=8, column=0, columnspan=2, pady=20)
+    # 站内查询
+    Button(signup, text="In-station query", font="楷体 10", relief="raised",
+           command=lambda: query(flag, user_name, user_age, user_sex, signup)).grid(row=9, column=0, columnspan=2, pady=20)
+    # 通配查询
+    Button(signup, text="Wildcard query", font="楷体 10", relief="raised",
+           command=lambda: wildcard_query(user_name, signup)).grid(row=10, column=0, columnspan=2, pady=20)
 
     parent.destroy()
 
@@ -325,6 +393,13 @@ def check_info(e1, parent):
     # 没注册过，跳到注册界面
     if user_name not in users_info_dic.keys():
         need_save_info = True
+        # askyesno返回True False, askquestion返回“Yes" ”No“
+        tmp = tkinter.messagebox.askyesno(message='You have not registered yet\nDo you want to register?')
+        if tmp == False:
+            return
+        else:
+            sign_up(need_save_info, parent)
+        """
         check_info_error = Tk()
         check_info_error.title('error')
         check_info_error.geometry("350x200+400+200")
@@ -334,6 +409,7 @@ def check_info(e1, parent):
            command=lambda: sign_up(need_save_info, check_info_error)).grid(row=1, column=0, columnspan=2, pady=20)
         #check_info_error.destroy()
         parent.destroy()
+        """
         print('Error, you have not registered yet.')
     # 登录成功，跳到查询界面
     else:
@@ -395,7 +471,7 @@ if __name__ == '__main__':
     # 登录
     Button(master, text="log in", font="楷体 14", relief="raised", command=lambda: log_in(master)).grid(row=4, column=0, pady=5)
     # 注册
-    Button(master, text="sign up", font="楷体 14", relief="raised", command=lambda: sign_up(flag = True,parent=master)).grid(row=4, column=1)
+    Button(master, text="sign up", font="楷体 14", relief="raised", command=lambda: sign_up(flag=True, parent=master)).grid(row=4, column=1)
     master.mainloop()
 
 
