@@ -12,12 +12,10 @@ from string import  punctuation
 import numpy as np
 import page_rank
 import datetime
-from tkinter import *
 import tkinter
 from tkinter import *
-from tkinter import messagebox
-from tkinter.ttk import Combobox
-# 全局，不作为参数输入，搭可能前端会简单一些（我猜的）
+
+# 全局，不作为参数输入
 my_user_term = None
 # user_name =None
 #global_user_name = None
@@ -34,6 +32,12 @@ class user_term:
 
 
 def content_query(file_num, query_str):
+    """
+
+    :param file_num:
+    :param query_str:
+    :return:
+    """
     # 加载倒排字典
     inverted_index_dic = dict()
     with open("dataset/inverted_index_dic.pkl", "rb") as tf:
@@ -74,6 +78,11 @@ def content_query(file_num, query_str):
 
 
 def get_final_result(result_list):
+    """
+    输出结果，传到Tkinter前端中
+    :param result_list:
+    :return:
+    """
     # 输出结果
     output_res = "The top five query results are as follows————\n"
     # url
@@ -99,7 +108,7 @@ def get_final_result(result_list):
     return output_res
 
 
-def log_in1():
+def log_in_v1():
     """
     登录/注册
     :return: 用户的年龄和性别
@@ -127,6 +136,7 @@ def log_in1():
     else:
         print('Login success, ', user_name, '!')
     return users_info_dic[user_name]
+
 
 def to_query():
     """
@@ -169,8 +179,16 @@ def to_query():
     # print('猜你喜欢：')
 
 # def jump_to_query(parent):
+    # pass
 
 def query_result_view(query_str_entry, user_name_str, parent):
+    """
+    输出查询结果
+    :param query_str_entry:查询字符串	输入控件
+    :param user_name_str:用户名
+    :param parent:
+    :return:
+    """
     query_str = query_str_entry.get()
     user_name = user_name_str
     # 查询日志
@@ -201,18 +219,21 @@ def query_result_view(query_str_entry, user_name_str, parent):
     query_result_view_win = Tk()
     query_result_view_win.title('query result of [' + query_str + ']')
     query_result_view_win.geometry("700x400+400+200")
-    Label(query_result_view_win, text= res, font="微软雅黑 10",justify='left').grid(row=0, column=0, columnspan=2, sticky="w",
+    Label(query_result_view_win, text=res, font="微软雅黑 10",justify='left').grid(row=0, column=0, columnspan=2, sticky="w",
                                                                    pady=10)
     # parent.destroy()
 
 
-
-
-
-
-
-
 def query(flag, user_name, user_age, user_sex, parent):
+    """
+    输入查询字符串
+    :param flag:是否需要保存用户信息
+    :param user_name:用户名输入控件
+    :param user_age:年龄	输入控件
+    :param user_sex:性别 输入控件
+    :param parent:
+    :return:
+    """
     user_name_str = user_name.get()
     # 从sign up跳过来的，需要保存用户信息
     if flag:
@@ -256,6 +277,12 @@ def query(flag, user_name, user_age, user_sex, parent):
 
 
 def sign_up(flag, parent):
+    """
+    用户注册，需输入姓名，年龄，性别
+    :param flag:传到query函数，用于判断是否需要在字典中写入用户信息（sign up结束后才写入）
+    :param parent:
+    :return:
+    """
     signup = Tk()
     signup.title('sign up')
     signup.geometry("350x350+400+200")
@@ -279,10 +306,16 @@ def sign_up(flag, parent):
 
 
 def check_info(e1, parent):
+    """
+    检验用户先前是否注册过，如没有注册过，转到注册界面
+    :param e1: 用户名的输入控件
+    :param parent:
+    :return:
+    """
     #parent.destroy()
     user_name = e1.get()
     # 核对是否注册过
-    # print('check_info user name :', user_name)
+    print('check_info user name :', user_name)
     try:
         with open("dataset/users_info_dic.pkl", "rb") as tf:
             users_info_dic = pickle.load(tf)
@@ -319,6 +352,11 @@ def check_info(e1, parent):
 
 
 def log_in(parent):
+    """
+    登录界面，输入用户名
+    :param parent:
+    :return:
+    """
     parent.destroy()
     login = Tk()
     login.title("log in")
@@ -333,12 +371,12 @@ def log_in(parent):
     # login.mainloop()
     # user_name_str = V_name.get()
     # print('log in user_name_str:',user_name_str)
-    Button(login, text="登录", font="宋体 14", relief="raised",
+    Button(login, text="log in", font="宋体 14", relief="raised",
            command=lambda: check_info(user_name, login)).grid(row=3,column=0, columnspan=2,pady=20)
 
 
 if __name__ == '__main__':
-    # my_user_term = log_in()
+    # my_user_term = log_in_v1()
     # to_query()
     try:
         with open("dataset/users_info_dic.pkl", "rb") as tf:
@@ -348,9 +386,9 @@ if __name__ == '__main__':
     # 主页面
     master = Tk()
     master.title("welcome")
-    # 宽420 高400 第1个加号是距离屏幕左边的宽，第2个加号是距离屏幕顶部的高
-    # master.geometry("420x200+500+200")
+    # 宽420 高400
     master.geometry("460x250+400+200")
+
     Label(master,text='\nUse jamie109 web search engine.\n\nSearch for news links for you.\n\n''Based on http://news.nankai.edu.cn.\n',
         font="楷体 17", justify=LEFT).grid(row=1, column=0, columnspan=2,
                                          sticky='w', pady=10)
