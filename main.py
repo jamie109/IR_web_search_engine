@@ -32,9 +32,9 @@ class user_term:
         # self.passport = passport
 
 
-def content_query(file_num, query_str):
+def content_query(is_wildcard, file_num, query_str):
     """
-
+    如果是通配查询，要对输入字符串进行处理，？单个字符，*任意字符序列
     :param file_num:
     :param query_str:
     :return:
@@ -43,13 +43,18 @@ def content_query(file_num, query_str):
     inverted_index_dic = dict()
     with open("dataset/inverted_index_dic.pkl", "rb") as tf:
         inverted_index_dic = pickle.load(tf)
-
+    query_str_list = []
+    # 通配查询
+    if is_wildcard:
+        query_str_list = title_query.proc_wildcard(list(inverted_index_dic.keys()), query_str)
+    else:
     #query_str_list = query_str.split(' ')
-    # 去标点、小写、分词
-    query_str = query_str.replace(' ', '')
-    content = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", query_str)
-    content = content.lower()
-    query_str_list = jieba.lcut_for_search(content)[0:10]
+        # 去标点、小写、分词
+        query_str = query_str.replace(' ', '')
+        content = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", query_str)
+        content = content.lower()
+        query_str_list = jieba.lcut_for_search(content)[0:10]
+
     # 查询结果初始化
     content_query_dic = dict()
     for i in range(file_num):
@@ -182,9 +187,9 @@ def to_query():
 # def jump_to_query(parent):
     # pass
 
-def query_result_view(query_str_entry, user_name_str, parent):
+def query_result_view(is_wildcard,query_str_entry, user_name_str, parent):
     """
-    输出查询结果
+    输出查询结果,
     :param query_str_entry:查询字符串	输入控件
     :param user_name_str:用户名
     :param parent:
@@ -202,9 +207,9 @@ def query_result_view(query_str_entry, user_name_str, parent):
     # 开始查询
     print('start query time 1 ', str(datetime.datetime.now())[0:-7])
     # content
-    content_result_list = content_query(file_num, query_str)
+    content_result_list = content_query(is_wildcard, file_num, query_str)
     # title
-    title_result_list = title_query.title_query(query_str)
+    title_result_list = title_query.title_query(is_wildcard, query_str)
     # pagerank
     with open("dataset/id_pagerank_dic.pkl", "rb") as tf:
         pagerank_dic = pickle.load(tf)
@@ -272,7 +277,7 @@ def query(flag, user_name, user_age, user_sex, parent):
                                                                     pady=10)
     input_query_str_entry.grid(row=1, column=0, sticky="e", padx=20)
     Button(query_start, text='View query results', font="宋体 14", relief="raised",
-           command=lambda:query_result_view(input_query_str_entry, user_name_str, parent)).grid(row=2, column=0, columnspan=2,
+           command=lambda:query_result_view(False, input_query_str_entry, user_name_str, parent)).grid(row=2, column=0, columnspan=2,
                                                                                     pady=20)
     #parent.destroy()
 
@@ -300,7 +305,7 @@ def wildcard_query(user_name, parent):
 
     input_query_str_entry.grid(row=3, column=0, sticky="e", padx=20)
     Button(wildcard_query_start, text='View query results', font="宋体 14", relief="raised",
-           command=lambda: query_result_view(input_query_str_entry, user_name_str, parent)).grid(row=4, column=0,
+           command=lambda: query_result_view(True, input_query_str_entry, user_name_str, parent)).grid(row=4, column=0,
                                                                                                  columnspan=2,
                                                                                                  pady=20)
 

@@ -5,6 +5,22 @@ from string import punctuation
 import math
 import numpy as np
 import pickle
+from fnmatch import fnmatch
+
+
+def proc_wildcard(words_list, str_with_wildcard):
+    """
+    通配符号处理
+    :param str_with_wildcard: 带有通配符号的字符串
+    :return: 处理后的包含在单词集合中的单词列表
+    """
+    processed_list = []
+    for item in words_list:
+        if fnmatch(item, str_with_wildcard):
+            processed_list.append(item)
+    return processed_list
+
+
 
 def cal_tf(term, a_doc):
     """
@@ -58,9 +74,10 @@ def sorted_index(array):
     return sorted_indexes
 
 
-def title_query(query_str):
+def title_query(is_wildcard, query_str):
     """
     进行查询输入跟标题的查询，保存余弦相似度字典到本地（id对应的）
+    如果是通配查询，要对输入字符串进行处理，？单个字符，*任意字符序列
     :param path: 网页内容txt路径
     :param query_str: 要查询的内容，字符串格式，空格隔开
     :param url_id_dic: 根据id查找url的字典
@@ -103,6 +120,9 @@ def title_query(query_str):
     title_terms_list = list(set(title_terms_list))
     title_terms_num = len(title_terms_list)
     title_terms_list = sorted(title_terms_list)
+    # 通配查询，对查询字符串进行处理
+    if is_wildcard:
+        query_str = proc_wildcard(title_terms_list, query_str)
     # 行数 = 词项的数目
     # 列数 = 9（文档） + 1（查询）
     tf_2D_arr = np.zeros((title_terms_num, file_num + 1))
@@ -189,18 +209,25 @@ def test_read_files(path):
 
 
 if __name__ == '__main__':
-    with open("dataset/url_id_dic.pkl", "rb") as tf:
-        url_id_dic = pickle.load(tf)
-    #query_str = input("请输入您的查询词项，如输入多个，请以空格分割:")
-    query_str = input("Please enter your query terms.\nIf you enter more than one, please separate them with spaces: ")
-    # 测试用的
-    files_path_test = './test_inverted_index/'
-    files_path = './dataset/web_data/'
-    my_docs_cos_sim = title_query(files_path, query_str, url_id_dic)
-    #print(my_docs_cos_sim)
-    tf.close()
-    # a = sorted_index([9,8,7,6,5])
-    # for i in range(len(a)):
-    #     print(a[i])
+    # with open("dataset/url_id_dic.pkl", "rb") as tf:
+    #     url_id_dic = pickle.load(tf)
+    # #query_str = input("请输入您的查询词项，如输入多个，请以空格分割:")
+    # query_str = input("Please enter your query terms.\nIf you enter more than one, please separate them with spaces: ")
+    # # 测试用的
+    # files_path_test = './test_inverted_index/'
+    # files_path = './dataset/web_data/'
+    # my_docs_cos_sim = title_query(files_path, query_str, url_id_dic)
+    # #print(my_docs_cos_sim)
+    # tf.close()
+    # # a = sorted_index([9,8,7,6,5])
+    # # for i in range(len(a)):
+    # #     print(a[i])
 
+    # # 测试通配符号处理
+    # words = ['南开大学', '看南门的','模块', '黄河一取']
+    # str_my = '?块'
+    # print(proc_wildcard(words,str_my))
+    mydic = {'南开大学':1, '看南门的':2,'模块':3, '黄河一取':4}
+    print(list(mydic.keys()))
+    print(type(mydic.keys()))
     #test_read_files(files_path)
