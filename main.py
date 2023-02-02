@@ -49,11 +49,14 @@ def content_query(is_wildcard, file_num, query_str):
         query_str_list = title_query.proc_wildcard(list(inverted_index_dic.keys()), query_str)
     else:
     #query_str_list = query_str.split(' ')
+        # 方式一：分词处理
         # 去标点、小写、分词
         query_str = query_str.replace(' ', '')
         content = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", query_str)
         content = content.lower()
         query_str_list = jieba.lcut_for_search(content)[0:10]
+        # 方式二，输入关键字以空格分割
+        # query_str_list = query_str.split(' ')
 
     # 查询结果初始化
     content_query_dic = dict()
@@ -199,7 +202,11 @@ def query_result_view(is_wildcard,query_str_entry, user_name_str, parent):
     user_name = user_name_str
     # 查询日志
     now_time = str(datetime.datetime.now())[0:-7]
-    query_log = '[' + now_time + '] '+'OP: query, '+'user_name:@' + user_name + ', query_str:' + query_str + '\n'
+    if is_wildcard:
+        query_way = 'Wildcard_query'
+    else:
+        query_way = 'In-station_query'
+    query_log = '[' + now_time + '] '+'OP: '+ query_way +', user_name:@' + user_name + ', query_str:' + query_str + '\n'
     with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
         f.write(query_log)
     f.close()
@@ -334,7 +341,7 @@ def save_info(user_name, user_age, user_sex, parent):
     print(f'@Congratulations,{user_name.get()}! The registration is successful.')
     # 注册日志
     now_time = str(datetime.datetime.now())[0:-7]
-    query_log = '[' + now_time + '] ' + 'OP: sign up, ' + 'user_name:@' + user_name.get() + ', user_age:' + str(
+    query_log = '[' + now_time + '] ' + 'OP: sign_up, ' + 'user_name:@' + user_name.get() + ', user_age:' + str(
         user_age_int) + ', user_sex:' + user_sex.get() + '\n'
     with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
         f.write(query_log)
@@ -379,6 +386,12 @@ def sign_up(flag, parent):
 
 
 def login_jump_query(user_name_entry, parent):
+    """
+    选择查询方式，站内、通配？
+    :param user_name_entry:
+    :param parent:
+    :return:
+    """
     jump_to_query = Tk()
     jump_to_query.title('In-station or wildcard?')
     jump_to_query.geometry("350x300+400+200")
@@ -443,7 +456,7 @@ def check_info(e1, parent):
         #query(flag = False, user_name = e1, user_age = None, user_sex = None, parent = parent)
         # 登录日志
         now_time = str(datetime.datetime.now())[0:-7]
-        query_log = '[' + now_time + '] ' + 'OP: log in, ' + 'user_name:@' + user_name + '\n'
+        query_log = '[' + now_time + '] ' + 'OP: log_in, ' + 'user_name:@' + user_name + '\n'
         with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
             f.write(query_log)
         f.close()

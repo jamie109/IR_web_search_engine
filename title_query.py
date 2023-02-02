@@ -31,13 +31,14 @@ def cal_tf(term, a_doc):
     count = 0
     # print(type(a_doc))
     if type(a_doc) == type('abd'):
+        # 方式一：分词处理
         # 去标点、小写、分词
         a_doc = a_doc.replace(' ', '')
         content = re.sub(r"[{}、，。！？·【】）》；;《“”（-]+".format(punctuation), "", a_doc)
         content = content.lower()
         a_doc = jieba.lcut_for_search(content)[0:10]
-
-        #a_doc = a_doc.split(' ')
+        # 方式二，输入关键字以空格分割
+        # a_doc = a_doc.split(' ')
     for t in a_doc:
         #print(t)
         if t == term:
