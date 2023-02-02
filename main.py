@@ -12,10 +12,15 @@ from string import  punctuation
 import numpy as np
 import page_rank
 import datetime
-
+from tkinter import *
+import tkinter
+from tkinter import *
+from tkinter import messagebox
+from tkinter.ttk import Combobox
 # 全局，不作为参数输入，搭可能前端会简单一些（我猜的）
 my_user_term = None
-
+# user_name =None
+#global_user_name = None
 class user_term:
     name = None
     age = None
@@ -69,6 +74,8 @@ def content_query(file_num, query_str):
 
 
 def get_final_result(result_list):
+    # 输出结果
+    output_res = "The top five query results are as follows\n"
     # url
     with open("dataset/url_id_dic.pkl", "rb") as tf1:
         url_id_dic = pickle.load(tf1)
@@ -81,15 +88,18 @@ def get_final_result(result_list):
     for i in range(5):
         tmp_i = file_num - 1 - i
         # print(rank, ':', title_dic[sorted_indexes[tmp_i]+10], url_id_dic[sorted_indexes[tmp_i]+10])
+        output_res = output_res + '@ '+ str(rank) + ': '+ title_dic[sorted_indexes[tmp_i]] +'\nlink: '+ url_id_dic[sorted_indexes[tmp_i]] + '\n'
         print('@', rank, ':', title_dic[sorted_indexes[tmp_i]],
               url_id_dic[sorted_indexes[tmp_i]])
         rank = rank + 1
     print('The query has ended.Byebye~')
     tf1.close()
     tf.close()
+    # print(f"\nthe output_res is ", output_res )
+    return output_res
 
 
-def log_in():
+def log_in1():
     """
     登录/注册
     :return: 用户的年龄和性别
@@ -156,10 +166,182 @@ def to_query():
     get_final_result(title_content_pagerank)
     tf.close()
     print("------------------------end-----------------------------")
+    # print('猜你喜欢：')
+
+# def jump_to_query(parent):
+
+def query_result_view(query_str_entry, user_name_str, parent):
+    query_str = query_str_entry.get()
+    user_name = user_name_str
+    # 查询日志
+    now_time = str(datetime.datetime.now())
+    query_log = '[' + now_time + '] user_name:@' + user_name + ' query_str:' + query_str + '\n'
+    with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
+        f.write(query_log)
+    f.close()
+    print('@ write query log over.')
+    # 开始查询
+    # content
+    content_result_list = content_query(file_num, query_str)
+    # title
+    title_result_list = title_query.title_query(query_str)
+    # pagerank
+    with open("dataset/id_pagerank_dic.pkl", "rb") as tf:
+        pagerank_dic = pickle.load(tf)
+    pagerank_list = list(pagerank_dic.values())
+    # 组合相似度
+    title_content = np.array(content_result_list) * 0.1 + np.array(title_result_list)
+    title_content_pagerank = title_content + np.array(pagerank_list)
+    print('@ title_content_pagerank query')
+    res = get_final_result(title_content_pagerank)
+    tf.close()
+    query_result_view_win = Tk()
+    query_result_view_win.title('query result of [' + query_str + ']')
+    query_result_view_win.geometry("600x400+400+200")
+    Label(query_result_view_win, text= res, font="微软雅黑 10",justify='left').grid(row=0, column=0, columnspan=2, sticky="w",
+                                                                   pady=10)
+    # parent.destroy()
+
+
+
+
+
+
+
+
+def query(flag, user_name, user_age, user_sex, parent):
+    user_name_str = user_name.get()
+    # 从sign up跳过来的，需要保存用户信息
+    if flag:
+        # 创建用户信息
+        print('@create user info')
+        print(f'name = {user_name.get()}')
+        if user_age.get() == '':
+            print('age = 0')
+            user_age_int = 0
+        else:
+            user_age_int = int(user_age.get())
+            print(f'age = {user_age_int}')
+        print(f'sex = {user_sex.get()}')
+        create_user_term = user_term(user_name.get(), user_age_int, user_sex.get())
+        # 加入用户信息字典，保存
+        print('add user info to users_info_dic.pkl')
+        users_info_dic[user_name.get()] = create_user_term
+        with open("dataset/users_info_dic.pkl", "wb") as t:
+            pickle.dump(users_info_dic, t)
+        t.close()
+        print(f'@Congratulations,{user_name.get()}! The registration is successful.')
+    # 查询
+    query_start = Tk()
+    query_start.title('query')
+    query_start.geometry("350x200+400+200")
+    input_query_str_entry = Entry(query_start, width=30)
+    Label(query_start, text='\n Input query statement:', font="微软雅黑 14").grid(row=0, column=0, columnspan=2, sticky="w",
+                                                                    pady=10)
+    input_query_str_entry.grid(row=1, column=0, sticky="e", padx=20)
+    Button(query_start, text='View query results', font="宋体 14", relief="raised",
+           command= lambda :query_result_view(input_query_str_entry, user_name_str, parent)).grid(row=2, column=0, columnspan=2,
+                                                                                    pady=20)
+    parent.destroy()
+
+
+def sign_up(flag, parent):
+    signup = Tk()
+    signup.title('sign up')
+    signup.geometry("350x350+400+200")
+    user_name = Entry(signup, width=30)
+    user_age = Entry(signup, width=30)
+    user_sex = Entry(signup, width=30)
+    Label(signup, text='\n  Enter your name:', font="微软雅黑 14").grid(row=0, column=0, columnspan=2, sticky="w",
+                                                                   pady=10)
+    user_name.grid(row=1, column=1, sticky="e", padx=20)
+    Label(signup, text='  Enter your age:', font="微软雅黑 14").grid(row=2, column=0, columnspan=2, sticky="w",
+                                                                    pady=10)
+    user_age.grid(row=3, column=1, sticky="e", padx=20)
+    Label(signup, text='  Enter your sex(male or female):', font="微软雅黑 14").grid(row=4, column=0, columnspan=2, sticky="w",
+                                                                    pady=10)
+    user_sex.grid(row=5, column=1, sticky="e", padx=20)
+
+    Button(signup, text='OK,jump to the query interface!', font="宋体 14", relief="raised",
+           command=lambda: query(flag, user_name, user_age, user_sex, signup)).grid(row=6, column=0, columnspan=2, pady=20)
+
+    parent.destroy()
+
+
+def check_info(e1, parent):
+    #parent.destroy()
+    user_name = e1.get()
+    # 核对是否注册过
+    # print('check_info user name :', user_name)
+    try:
+        with open("dataset/users_info_dic.pkl", "rb") as tf:
+            users_info_dic = pickle.load(tf)
+    except:
+        users_info_dic = dict()
+    tf.close()
+    # 没注册过，跳到注册界面
+    if user_name not in users_info_dic.keys():
+        need_save_info = True
+        check_info_error = Tk()
+        check_info_error.title('error')
+        check_info_error.geometry("350x200+400+200")
+        Label(check_info_error, text='\n  ERROR!\n\n   You have not registered yet.',
+              font="微软雅黑 14").grid(row=0, column=0, columnspan=2, sticky="w", pady=10)
+        Button(check_info_error, text='sign up!', font="宋体 14", relief="raised",
+           command=lambda: sign_up(need_save_info, check_info_error)).grid(row=1, column=0, columnspan=2, pady=20)
+        #check_info_error.destroy()
+        parent.destroy()
+        print('Error, you have not registered yet.')
+    # 登录成功，跳到查询界面
+    else:
+        # parent.destroy()
+        # check_info_suc = Tk()
+        # check_info_suc.title('Login success')
+        query(flag = False, user_name = e1, user_age = None, user_sex = None, parent = parent)
+        print('Login success, ', user_name, '!')
+
+
+def log_in(parent):
+    parent.destroy()
+    login = Tk()
+    login.title("log in")
+    login.geometry("350x200+400+200")
+
+    user_name = Entry(login, width=30)#, textvariable = V_name)
+    # pwdE = Entry(login, width=30)
+    Label(login, text='\nEnter user name:\n', font="微软雅黑 14").grid(row=0, column=0, columnspan=2, sticky="w",
+                                                 pady=10)
+    user_name.grid(row=1, column=1, sticky="e", padx=20)
+
+    # login.mainloop()
+    # user_name_str = V_name.get()
+    # print('log in user_name_str:',user_name_str)
+    Button(login, text="登录", font="宋体 14", relief="raised",
+           command=lambda: check_info(user_name, login)).grid(row=3,column=0, columnspan=2,pady=20)
 
 
 if __name__ == '__main__':
-    my_user_term = log_in()
-    to_query()
+    # my_user_term = log_in()
+    # to_query()
+    try:
+        with open("dataset/users_info_dic.pkl", "rb") as tf:
+            users_info_dic = pickle.load(tf)
+    except:
+        users_info_dic = dict()
+    # 主页面
+    master = Tk()
+    master.title("welcome")
+    # 宽420 高400 第1个加号是距离屏幕左边的宽，第2个加号是距离屏幕顶部的高
+    # master.geometry("420x200+500+200")
+    master.geometry("460x250+400+200")
+    Label(master,text='\nUse jamie109 web search engine.\n\nSearch for news links for you.\n\n''Based on http://news.nankai.edu.cn.\n',
+        font="楷体 17", justify=LEFT).grid(row=1, column=0, columnspan=2,
+                                         sticky='w', pady=10)
+    # 登录
+    Button(master, text="log in", font="楷体 14", relief="raised", command=lambda: log_in(master)).grid(row=4, column=0, pady=5)
+    # 注册
+    Button(master, text="sign up", font="楷体 14", relief="raised", command=lambda: sign_up(flag = True,parent=master)).grid(row=4, column=1)
+    master.mainloop()
+
 
 
