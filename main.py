@@ -75,7 +75,7 @@ def content_query(file_num, query_str):
 
 def get_final_result(result_list):
     # 输出结果
-    output_res = "The top five query results are as follows\n"
+    output_res = "The top five query results are as follows————\n"
     # url
     with open("dataset/url_id_dic.pkl", "rb") as tf1:
         url_id_dic = pickle.load(tf1)
@@ -83,12 +83,12 @@ def get_final_result(result_list):
     with open("dataset/title_id_dic.pkl", "rb") as tf:
         title_dic = pickle.load(tf)
     sorted_indexes = title_query.sorted_index(result_list)
-    print("The top five query results are as follows")
+    print("The top five query results are as follows————")
     rank = 1
     for i in range(5):
         tmp_i = file_num - 1 - i
         # print(rank, ':', title_dic[sorted_indexes[tmp_i]+10], url_id_dic[sorted_indexes[tmp_i]+10])
-        output_res = output_res + '@ '+ str(rank) + ': '+ title_dic[sorted_indexes[tmp_i]] +'\nlink: '+ url_id_dic[sorted_indexes[tmp_i]] + '\n'
+        output_res = output_res + ' @ '+ str(rank) + ': '+ title_dic[sorted_indexes[tmp_i]] +'\n url: '+ url_id_dic[sorted_indexes[tmp_i]] + '\n'
         print('@', rank, ':', title_dic[sorted_indexes[tmp_i]],
               url_id_dic[sorted_indexes[tmp_i]])
         rank = rank + 1
@@ -174,13 +174,14 @@ def query_result_view(query_str_entry, user_name_str, parent):
     query_str = query_str_entry.get()
     user_name = user_name_str
     # 查询日志
-    now_time = str(datetime.datetime.now())
-    query_log = '[' + now_time + '] user_name:@' + user_name + ' query_str:' + query_str + '\n'
+    now_time = str(datetime.datetime.now())[0:-7]
+    query_log = '[' + now_time + '] '+'OP: query, '+'user_name:@' + user_name + ', query_str:' + query_str + '\n'
     with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
         f.write(query_log)
     f.close()
     print('@ write query log over.')
     # 开始查询
+    print('start query time 1 ', str(datetime.datetime.now())[0:-7])
     # content
     content_result_list = content_query(file_num, query_str)
     # title
@@ -193,11 +194,13 @@ def query_result_view(query_str_entry, user_name_str, parent):
     title_content = np.array(content_result_list) * 0.1 + np.array(title_result_list)
     title_content_pagerank = title_content + np.array(pagerank_list)
     print('@ title_content_pagerank query')
+
     res = get_final_result(title_content_pagerank)
+    print('end query time 2 ',str(datetime.datetime.now())[0:-7])
     tf.close()
     query_result_view_win = Tk()
     query_result_view_win.title('query result of [' + query_str + ']')
-    query_result_view_win.geometry("600x400+400+200")
+    query_result_view_win.geometry("700x400+400+200")
     Label(query_result_view_win, text= res, font="微软雅黑 10",justify='left').grid(row=0, column=0, columnspan=2, sticky="w",
                                                                    pady=10)
     # parent.destroy()
@@ -231,6 +234,13 @@ def query(flag, user_name, user_age, user_sex, parent):
             pickle.dump(users_info_dic, t)
         t.close()
         print(f'@Congratulations,{user_name.get()}! The registration is successful.')
+        # 注册日志
+        now_time = str(datetime.datetime.now())[0:-7]
+        query_log = '[' + now_time + '] ' + 'OP: sign up, ' + 'user_name:@' + user_name.get() + ', user_age:' + str(user_age_int) + ', user_sex:' + user_sex.get()+ '\n'
+        with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
+            f.write(query_log)
+        f.close()
+        print('@ write user registration information log over.')
     # 查询
     query_start = Tk()
     query_start.title('query')
@@ -298,7 +308,14 @@ def check_info(e1, parent):
         # check_info_suc = Tk()
         # check_info_suc.title('Login success')
         query(flag = False, user_name = e1, user_age = None, user_sex = None, parent = parent)
+        # 登录日志
+        now_time = str(datetime.datetime.now())[0:-7]
+        query_log = '[' + now_time + '] ' + 'OP: log in, ' + 'user_name:@' + user_name + '\n'
+        with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
+            f.write(query_log)
+        f.close()
         print('Login success, ', user_name, '!')
+        print('@ write user login information log over.')
 
 
 def log_in(parent):
