@@ -1,0 +1,208 @@
+[2023-02-01 18:47:42.333803] 讲座学习
+[2023-02-01 19:49:55.116070] query_str:就业
+[2023-02-01 19:50:50.201411] query_str:就业
+[2023-02-01 19:51:51.012302] query_str:就业
+[2023-02-01 19:52:35.209834] query_str:温延龙
+[2023-02-01 19:53:26.708251] query_str:计算机学术讲座
+[2023-02-01 19:54:01.124147] query_str:学术讲座
+[2023-02-01 19:54:34.343983] query_str:讲座
+[2023-02-01 19:55:42.076552] query_str:讲座活动
+[2023-02-01 19:56:15.360590] query_str:研究所
+[2023-02-01 19:56:36.562204] query_str:贾春福老师
+[2023-02-01 19:56:56.931741] query_str:研究生选课
+[2023-02-01 20:19:27.311005] query_str:学习贯彻二十大南开
+[2023-02-01 20:20:14.205297] query_str:光明日报报道南开大学新闻
+[2023-02-01 20:21:07.087118] query_str:计算机学院
+[2023-02-01 20:22:30.110904] query_str:学术会议
+[2023-02-01 20:25:59.406485] query_str:医学发展情况
+[2023-02-01 20:27:15.215091] query_str:学习党的二十大精神
+[2023-02-01 21:09:48.874669] user_name:@wjm query_str:南开本科招生
+[2023-02-01 21:10:41.814786] user_name:@wjm query_str:党的二十大精神学习会议
+[2023-02-01 21:14:14.290098] user_name:@wjm02 query_str:研究人员攻坚
+[2023-02-01 21:15:14.932506] user_name:@wjm03 query_str:奖学金获得者
+[2023-02-02 12:38:42.721693] user_name:@test query_str:南开自然科学成果
+[2023-02-02 16:30:43.609318] user_name:@yy query_str:自然科学成果
+[2023-02-02 16:32:35.192405] user_name:@王娇妹 query_str:曹雪涛
+[2023-02-02 16:37:42.654442] user_name:@王娇妹 query_str:陈雨露
+[2023-02-02 16:38:25.974744] user_name:@王娇妹 query_str:二十大会议
+[2023-02-02 16:39:14.836452] user_name:@王娇妹 query_str:春节
+[2023-02-02 16:42:02.908829] user_name:@王娇妹 query_str:光明日报报道南开新闻
+[2023-02-02 16:43:27.413047] user_name:@jamie109 query_str:化学学院
+[2023-02-02 16:44:41.221284] user_name:@jamie109 query_str:法学院
+[2023-02-02 16:59:54] OP: log in user_name:@王娇妹
+[2023-02-02 17:00:08] OP: query user_name:@王娇妹 query_str:二十大会议精神
+[2023-02-02 17:01:43] OP: sign up user_name:@nku user_age:54 user_sex:male
+[2023-02-02 17:01:59] OP: query user_name:@nku query_str:社会实践
+[2023-02-02 17:05:23] OP: log in user_name:@nku
+[2023-02-02 17:05:41] OP: query user_name:@nku query_str:开学典礼
+[2023-02-02 17:06:55] OP: log in user_name:@王娇妹
+[2023-02-02 17:07:05] OP: query user_name:@王娇妹 query_str:津南
+[2023-02-02 17:08:17] OP: log in user_name:@王娇妹
+[2023-02-02 17:08:21] OP: query user_name:@王娇妹 query_str:八里台
+[2023-02-02 17:09:08] OP: query user_name:@王娇妹 query_str:学术会议
+[2023-02-02 17:11:46] OP: log in user_name:@nku
+[2023-02-02 17:11:51] OP: query user_name:@nku query_str:天津
+[2023-02-02 17:13:46] OP: log in, user_name:@nku
+[2023-02-02 17:14:04] OP: query, user_name:@nku, query_str:博士
+[2023-02-02 17:15:05] OP: query, user_name:@nku, query_str:研究生
+[2023-02-02 17:15:46] OP: query, user_name:@nku, query_str:博士
+[2023-02-02 17:17:46] OP: sign up, user_name:@namehh, user_age:22, user_sex:male
+[2023-02-02 17:17:54] OP: query, user_name:@namehh, query_str:本科生
+[2023-02-02 17:18:52] OP: sign up, user_name:@namehhh, user_age:32, user_sex:male
+[2023-02-02 17:18:58] OP: query, user_name:@namehhh, query_str:南开故事
+[2023-02-02 17:47:44] OP: log in, user_name:@王娇妹
+[2023-02-02 17:47:54] OP: query, user_name:@王娇妹, query_str:科学研究
+[2023-02-02 17:49:46] OP: sign up, user_name:@ok, user_age:14, user_sex:male
+[2023-02-02 17:50:00] OP: query, user_name:@ok, query_str:英文
+[2023-02-02 19:33:54] OP: sign up, user_name:@, user_age:0, user_sex:
+[2023-02-02 19:36:34] OP: sign up, user_name:@海绵宝宝, user_age:3, user_sex:male
+[2023-02-02 19:40:12] OP: sign up, user_name:@派大星, user_age:5, user_sex:male
+[2023-02-02 19:44:54] OP: sign up, user_name:@章鱼哥, user_age:9, user_sex:male
+[2023-02-02 19:45:07] OP: query, user_name:@章鱼哥, query_str:分子
+[2023-02-02 19:45:30] OP: query, user_name:@章鱼哥, query_str:教授
+[2023-02-02 19:46:21] OP: sign up, user_name:@蟹老板, user_age:30, user_sex:male
+[2023-02-02 19:46:33] OP: query, user_name:@蟹老板, query_str:物理
+[2023-02-02 19:47:12] OP: query, user_name:@蟹老板, query_str:叶嘉莹
+[2023-02-02 20:00:50] OP: sign up, user_name:@包包大人, user_age:45, user_sex:male
+[2023-02-02 20:01:07] OP: query, user_name:@包包大人, query_str:青青草原
+[2023-02-02 20:14:20] OP: sign up, user_name:@光头强, user_age:39, user_sex:male
+[2023-02-02 20:17:07] OP: sign up, user_name:@胡图图, user_age:4, user_sex:male
+[2023-02-02 20:17:54] OP: query, user_name:@胡图图, query_str:院士
+[2023-02-02 20:52:57] OP: log in, user_name:@光头强
+[2023-02-02 20:53:49] OP: sign up, user_name:@小红帽, user_age:12, user_sex:female
+[2023-02-02 20:54:08] OP: query, user_name:@小红帽, query_str:二十*
+[2023-02-02 20:54:47] OP: query, user_name:@小红帽, query_str:叶?莹
+[2023-02-02 21:28:42] OP: log in, user_name:@派大星
+[2023-02-02 21:29:24] OP: log in, user_name:@派大星
+[2023-02-02 21:31:16] OP: log in, user_name:@王娇妹
+[2023-02-02 21:32:23] OP: log in, user_name:@海绵宝宝
+[2023-02-02 21:32:36] OP: query, user_name:@海绵宝宝, query_str:计算机
+[2023-02-02 21:33:04] OP: query, user_name:@海绵宝宝, query_str:陈?露
+[2023-02-02 21:33:26] OP: query, user_name:@海绵宝宝, query_str:陈雨露
+[2023-02-02 21:35:20] OP: log in, user_name:@派大星
+[2023-02-02 21:36:10] OP: log in, user_name:@蟹老板
+[2023-02-02 21:37:11] OP: log in, user_name:@章鱼哥
+[2023-02-02 21:37:41] OP: query, user_name:@章鱼哥, query_str:叶嘉*
+[2023-02-02 21:38:29] OP: sign up, user_name:@熊大, user_age:16, user_sex:male
+[2023-02-02 21:38:48] OP: query, user_name:@熊大, query_str:八里台
+[2023-02-02 21:49:09] OP: log_in, user_name:@蟹老板
+[2023-02-02 21:49:20] OP: In-station_query, user_name:@蟹老板, query_str:陈雨露
+[2023-02-02 21:49:38] OP: Wildcard_query, user_name:@蟹老板, query_str:陈雨露
+[2023-02-02 21:49:50] OP: Wildcard_query, user_name:@蟹老板, query_str:陈雨?
+[2023-02-02 21:50:17] OP: In-station_query, user_name:@蟹老板, query_str:二十大 计算机
+[2023-02-02 21:50:41] OP: In-station_query, user_name:@蟹老板, query_str:院士 医学
+[2023-02-02 21:51:09] OP: In-station_query, user_name:@蟹老板, query_str:化学 发展
+[2023-02-02 22:01:13] OP: log_in, user_name:@派大星
+[2023-02-02 22:01:19] OP: In-station_query, user_name:@派大星, query_str:陈雨露
+[2023-02-02 22:01:38] OP: Wildcard_query, user_name:@派大星, query_str:陈*
+[2023-02-02 22:02:05] OP: Wildcard_query, user_name:@派大星, query_str:陈?露
+[2023-02-02 22:02:37] OP: In-station_query, user_name:@派大星, query_str:二十大学习会议
+[2023-02-03 11:51:25] OP: log_in, user_name:@光头强
+[2023-02-03 11:52:01] OP: In-station_query, user_name:@光头强, query_str:京津冀发展
+[2023-02-03 11:52:40] OP: Wildcard_query, user_name:@光头强, query_str:京津?
+[2023-02-03 11:54:25] OP: log_in, user_name:@海绵宝宝
+[2023-02-03 12:35:25] OP: log_in, user_name:@包包大人
+[2023-02-03 12:35:43] OP: In-station_query, user_name:@包包大人, query_str:人才教师
+[2023-02-03 12:36:59] OP: log_in, user_name:@包包大人
+[2023-02-03 12:37:09] OP: Wildcard_query, user_name:@包包大人, query_str:教?
+[2023-02-03 12:37:53] OP: In-station_query, user_name:@包包大人, query_str:教授教师
+[2023-02-03 12:40:58] OP: log_in, user_name:@蟹老板
+[2023-02-03 12:41:10] OP: In-station_query, user_name:@蟹老板, query_str:总书记嘱托
+[2023-02-03 12:43:39] OP: log_in, user_name:@章鱼哥
+[2023-02-03 12:43:55] OP: In-station_query, user_name:@章鱼哥, query_str:科研创新
+[2023-02-03 12:44:49] OP: log_in, user_name:@派大星
+[2023-02-03 12:45:04] OP: In-station_query, user_name:@派大星, query_str:中华文化
+[2023-02-03 12:45:28] OP: Wildcard_query, user_name:@派大星, query_str:领导考察
+[2023-02-03 12:46:14] OP: sign_up, user_name:@夏奇拉, user_age:45, user_sex:female
+[2023-02-03 12:46:27] OP: In-station_query, user_name:@夏奇拉, query_str:自动驾驶
+[2023-02-03 12:47:03] OP: Wildcard_query, user_name:@夏奇拉, query_str:年*
+[2023-02-03 12:50:42] OP: sign_up, user_name:@哈利, user_age:18, user_sex:male
+[2023-02-03 12:52:35] OP: log_in, user_name:@哈利
+[2023-02-03 12:54:26] OP: log_in, user_name:@胡图图
+[2023-02-03 12:54:45] OP: In-station_query, user_name:@胡图图, query_str:海河教育
+[2023-02-03 12:55:22] OP: Wildcard_query, user_name:@胡图图, query_str:党?会
+[2023-02-03 12:56:17] OP: sign_up, user_name:@leo, user_age:36, user_sex:male
+[2023-02-03 12:57:17] OP: Wildcard_query, user_name:@leo, query_str:庄*
+[2023-02-03 13:18:37] OP: log_in, user_name:@夏奇拉
+[2023-02-03 13:18:49] OP: In-station_query, user_name:@夏奇拉, query_str:核酸志愿者
+[2023-02-03 13:19:21] OP: In-station_query, user_name:@夏奇拉, query_str:落叶
+[2023-02-03 13:20:26] OP: Wildcard_query, user_name:@夏奇拉, query_str:学?
+[2023-02-03 13:34:03] OP: log_in, user_name:@章鱼哥
+[2023-02-03 13:34:08] OP: In-station_query, user_name:@章鱼哥, query_str:温延龙
+[2023-02-03 13:34:24] OP: Wildcard_query, user_name:@章鱼哥, query_str:温?龙
+[2023-02-03 13:34:44] OP: In-station_query, user_name:@章鱼哥, query_str:视觉
+[2023-02-03 13:35:29] OP: In-station_query, user_name:@章鱼哥, query_str:网络实验室
+[2023-02-03 13:35:48] OP: In-station_query, user_name:@章鱼哥, query_str:学术讲座
+[2023-02-03 13:36:12] OP: In-station_query, user_name:@章鱼哥, query_str:数据库
+[2023-02-03 13:37:01] OP: log_in, user_name:@leo
+[2023-02-03 13:37:13] OP: Wildcard_query, user_name:@leo, query_str:研究?
+[2023-02-03 13:38:03] OP: log_in, user_name:@光头强
+[2023-02-03 13:38:11] OP: In-station_query, user_name:@光头强, query_str:副教授
+[2023-02-03 13:38:33] OP: In-station_query, user_name:@光头强, query_str:选课通知
+[2023-02-03 14:01:54] OP: log_in, user_name:@leo
+[2023-02-03 14:02:00] OP: In-station_query, user_name:@leo, query_str:党代会
+[2023-02-03 14:07:59] OP: log_in, user_name:@leo
+[2023-02-03 14:08:05] OP: In-station_query, user_name:@leo, query_str:党代会
+[2023-02-03 14:10:32] OP: log_in, user_name:@夏奇拉
+[2023-02-03 14:10:41] OP: In-station_query, user_name:@夏奇拉, query_str:教授男
+[2023-02-03 14:10:59] OP: In-station_query, user_name:@夏奇拉, query_str:教授女
+[2023-02-03 14:11:37] OP: In-station_query, user_name:@夏奇拉, query_str:团日本科
+[2023-02-03 14:11:53] OP: In-station_query, user_name:@夏奇拉, query_str:团日研究生
+[2023-02-03 14:12:17] OP: In-station_query, user_name:@夏奇拉, query_str:荣誉奖学金本科
+[2023-02-03 14:12:32] OP: In-station_query, user_name:@夏奇拉, query_str:荣誉奖学金
+[2023-02-03 14:12:56] OP: In-station_query, user_name:@夏奇拉, query_str:院士女
+[2023-02-03 14:13:48] OP: In-station_query, user_name:@夏奇拉, query_str:二十大学院
+[2023-02-03 14:14:15] OP: In-station_query, user_name:@夏奇拉, query_str:典礼
+[2023-02-03 14:14:32] OP: In-station_query, user_name:@夏奇拉, query_str:典礼新生
+[2023-02-03 14:14:53] OP: In-station_query, user_name:@夏奇拉, query_str:典礼毕业
+[2023-02-03 14:15:40] OP: In-station_query, user_name:@夏奇拉, query_str:乡村振兴
+[2023-02-03 14:16:37] OP: log_in, user_name:@蟹老板
+[2023-02-03 14:16:50] OP: In-station_query, user_name:@蟹老板, query_str:陈雨露
+[2023-02-03 14:17:05] OP: In-station_query, user_name:@蟹老板, query_str:曹雪涛
+[2023-02-03 14:17:10] OP: In-station_query, user_name:@蟹老板, query_str:曹雪涛
+[2023-02-03 14:17:56] OP: In-station_query, user_name:@荣誉称号, query_str:荣誉称号
+[2023-02-03 14:18:26] OP: In-station_query, user_name:@荣誉称号, query_str:语言
+[2023-02-03 14:23:22] OP: log_in, user_name:@章鱼哥
+[2023-02-03 14:23:40] OP: In-station_query, user_name:@章鱼哥, query_str:荣誉称号奖学金
+[2023-02-03 14:25:42] OP: In-station_query, user_name:@章鱼哥, query_str:开学
+[2023-02-03 14:26:28] OP: In-station_query, user_name:@章鱼哥, query_str:典礼
+[2023-02-03 14:27:29] OP: log_in, user_name:@章鱼哥
+[2023-02-03 14:27:40] OP: In-station_query, user_name:@章鱼哥, query_str:新生报道
+[2023-02-03 14:28:22] OP: In-station_query, user_name:@章鱼哥, query_str:硕博
+[2023-02-03 14:29:44] OP: In-station_query, user_name:@章鱼哥, query_str:入职
+[2023-02-03 14:30:09] OP: In-station_query, user_name:@章鱼哥, query_str:科技奖
+[2023-02-03 14:30:58] OP: In-station_query, user_name:@章鱼哥, query_str:院士
+[2023-02-03 14:31:37] OP: In-station_query, user_name:@章鱼哥, query_str:学科发展
+[2023-02-03 14:39:24] OP: log_in, user_name:@夏奇拉
+[2023-02-03 14:39:34] OP: In-station_query, user_name:@夏奇拉, query_str:二十大会议学习
+[2023-02-03 14:40:31] OP: log_in, user_name:@小红帽
+[2023-02-03 14:40:41] OP: In-station_query, user_name:@小红帽, query_str:组图南开
+[2023-02-03 14:42:06] OP: sign_up, user_name:@Trump, user_age:73, user_sex:male
+[2023-02-03 14:42:21] OP: In-station_query, user_name:@Trump, query_str:退休
+[2023-02-03 14:47:47] OP: log_in, user_name:@小红帽
+[2023-02-03 14:48:03] OP: In-station_query, user_name:@小红帽, query_str:宣传教育
+[2023-02-03 14:49:03] OP: log_in, user_name:@Trump
+[2023-02-03 14:49:10] OP: In-station_query, user_name:@Trump, query_str:爱国
+[2023-02-03 15:04:50] OP: log_in, user_name:@胡图图
+[2023-02-03 15:05:06] OP: Wildcard_query, user_name:@胡图图, query_str:调?
+[2023-02-03 15:06:05] OP: log_in, user_name:@leo
+[2023-02-03 15:06:11] OP: Wildcard_query, user_name:@leo, query_str:调?
+[2023-02-03 15:07:24] OP: sign_up, user_name:@喜羊羊, user_age:5, user_sex:male
+[2023-02-03 15:07:33] OP: In-station_query, user_name:@喜羊羊, query_str:二十大
+[2023-02-03 15:08:27] OP: sign_up, user_name:@果粒橙, user_age:31, user_sex:female
+[2023-02-03 15:08:32] OP: In-station_query, user_name:@果粒橙, query_str:二十大
+[2023-02-03 15:09:22] OP: In-station_query, user_name:@果粒橙, query_str:汉语传承
+[2023-02-03 15:10:07] OP: log_in, user_name:@派大星
+[2023-02-03 15:10:12] OP: In-station_query, user_name:@派大星, query_str:汉语传承
+[2023-02-03 15:11:01] OP: log_in, user_name:@喜羊羊
+[2023-02-03 15:11:14] OP: In-station_query, user_name:@喜羊羊, query_str:语言文化
+[2023-02-03 15:11:40] OP: log_in, user_name:@leo
+[2023-02-03 15:11:59] OP: In-station_query, user_name:@leo, query_str:语言文化
+[2023-02-03 16:04:51] OP: sign_up, user_name:@红太狼, user_age:28, user_sex:female
+[2023-02-03 16:04:59] OP: In-station_query, user_name:@红太狼, query_str:陈雨露
+[2023-02-03 16:05:32] OP: Wildcard_query, user_name:@红太狼, query_str:叶嘉*
+[2023-02-03 16:06:17] OP: log_in, user_name:@红太狼
+[2023-02-03 16:06:26] OP: In-station_query, user_name:@红太狼, query_str:语言文化
+[2023-02-03 16:06:56] OP: log_in, user_name:@章鱼哥
+[2023-02-03 16:07:08] OP: In-station_query, user_name:@章鱼哥, query_str:语言文化
+[2023-02-03 16:07:28] OP: Wildcard_query, user_name:@章鱼哥, query_str:医?
