@@ -399,7 +399,13 @@ def save_info(user_name, user_age, user_sex, parent):
         f.write(query_log)
     f.close()
     print('@ write user registration information log over.')
-    tkinter.messagebox.showinfo(message="The registration is successful.")
+    # askyesno返回True False, askquestion返回“Yes" ”No“
+    tmp = tkinter.messagebox.askyesno(message='The registration is successful.\nDo you want to start now?')
+    if tmp == False:
+        return
+    else:
+        login_jump_query(user_name, parent)
+    # tkinter.messagebox.showinfo(message="The registration is successful.")
     # 获取全局变量用户年龄
     global global_age
     global_age = user_age_int
@@ -414,7 +420,7 @@ def sign_up(flag, parent):
     """
     signup = Tk()
     signup.title('sign up')
-    signup.geometry("350x440+400+200")
+    signup.geometry("350x300+400+200")
     user_name = Entry(signup, width=30)
     user_age = Entry(signup, width=30)
     user_sex = Entry(signup, width=30)
@@ -431,13 +437,13 @@ def sign_up(flag, parent):
     Button(signup, text='save info', font="楷体 10", relief="raised",
            command=lambda: save_info(user_name, user_age, user_sex, signup)).grid(row=8,
                                                                                   column=0, columnspan=2, pady=20)
-    # 站内查询
-    Button(signup, text="In-station query", font="楷体 10", relief="raised",
-           command=lambda: query(flag, user_name, user_age, user_sex, signup)).grid(
-                                                                    row=9, column=0, columnspan=2, pady=20)
-    # 通配查询
-    Button(signup, text="Wildcard query", font="楷体 10", relief="raised",
-           command=lambda: wildcard_query(user_name, signup)).grid(row=10, column=0, columnspan=2, pady=20)
+    # # 站内查询
+    # Button(signup, text="In-station query", font="楷体 10", relief="raised",
+    #        command=lambda: query(flag, user_name, user_age, user_sex, signup)).grid(
+    #                                                                 row=9, column=0, columnspan=2, pady=20)
+    # # 通配查询
+    # Button(signup, text="Wildcard query", font="楷体 10", relief="raised",
+    #        command=lambda: wildcard_query(user_name, signup)).grid(row=10, column=0, columnspan=2, pady=20)
 
     parent.destroy()
 
@@ -563,7 +569,7 @@ if __name__ == '__main__':
     # 宽420 高400
     master.geometry("460x250+400+200")
 
-    Label(master,text='\nUse jamie109 web search engine.\n\nSearch for news links for you.\n\n''Based on http://news.nankai.edu.cn.\n',
+    Label(master,text='\nUse 2012679 web search engine.\n\nSearch for news links for you.\n\n''Based on http://news.nankai.edu.cn.\n',
         font="楷体 17", justify=LEFT).grid(row=1, column=0, columnspan=2,
                                          sticky='w', pady=10)
     # 登录

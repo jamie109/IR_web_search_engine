@@ -1,8 +1,5 @@
 import pickle
 import networkx
-# 用来调整网页权重的，因为这个权重还需要跟标题啊内容啊什么的余弦相似度进行计算（可能是相加？它们应该有各自的权重）
-# 现在并没有用到
-PGRANK_ADJUST_PARAM = 1e4
 
 def get_pagerank():
     """
