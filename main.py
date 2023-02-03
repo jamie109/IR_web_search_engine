@@ -46,7 +46,8 @@ def recm_based_on_age(user_age):
         '1435期2022届毕业生扬帆逐梦启新程南开大学报南开大学\n http://news.nankai.edu.cn/nkdxb/system/2022/06/27/030051859.shtml',
         '南开欢迎你5000余名硕博新生报到南开要闻南开大学\n http://news.nankai.edu.cn/ywsd/system/2022/09/03/030052668.shtml',
         '学习二十大精神牢记总书记嘱托南开大学师生座谈会召开南开要闻南开大学\n http://news.nankai.edu.cn/ywsd/system/2023/01/17/030054271.shtml',
-        '组图新学期首日科学有效防控安全有序开学光影南开南开大学\n http://news.nankai.edu.cn/gynk/system/2021/01/08/030043781.shtml'
+        '组图新学期首日科学有效防控安全有序开学光影南开南开大学\n http://news.nankai.edu.cn/gynk/system/2021/01/08/030043781.shtml',
+        '爱国有原则敢讲真话我眼中的杨振宁先生南开故事南开大学\n http://news.nankai.edu.cn/nkrw/system/2022/09/26/030052949.shtml'
         ]
     else:
         recm_list = [
@@ -56,7 +57,8 @@ def recm_based_on_age(user_age):
             '1422期化学学科创建100周年纪念大会召开南开大学报南开大学\n http://news.nankai.edu.cn/nkdxb/system/2021/11/01/030048602.shtml',
             '津云南开大学以人才学科之石筑牢高等教育之基媒体南开南开大学\n http://news.nankai.edu.cn/mtnk/system/2023/01/19/030054289.shtml',
             '学术纵横校学术委员会考核评审百名青年学科带头人及团队项目广播南开大学\n http://news.nankai.edu.cn/gb/system/2021/01/15/030044192.shtml',
-            '学术纵横南开大学图灵书院开班跨学科打造师生共同体广播南开大学\n http://news.nankai.edu.cn/gb/system/2021/01/15/030044183.shtml'
+            '学术纵横南开大学图灵书院开班跨学科打造师生共同体广播南开大学\n http://news.nankai.edu.cn/gb/system/2021/01/15/030044183.shtml',
+            '这四年南开谱写新篇南开要闻南开大学\n http://news.nankai.edu.cn/ywsd/system/2023/01/16/030054264.shtml'
         ]
     #随机选3个
     recm_list_3_news = random.sample(recm_list, 3)
@@ -153,75 +155,75 @@ def get_final_result(result_list):
     return output_res
 
 
-def log_in_v1():
-    """
-    登录/注册
-    :return: 用户的年龄和性别
-    """
-    users_info_dic = dict()
-    user_name = input('Welcome!\nEnter user name: ')
-    # 核对是否注册过
-    try:
-        with open("dataset/users_info_dic.pkl", "rb") as tf:
-            users_info_dic = pickle.load(tf)
-    except:
-        users_info_dic = dict()
-    tf.close()
-    if user_name not in users_info_dic.keys():
-        print('Error, you have not registered yet.')
-        user_name = input('Enter the user name to register: ')
-        user_age = input('Enter your age: ')
-        user_sex = input('Enter your sex(male or female): ')
-        user_info = user_term(user_name, user_age, user_sex)
-        users_info_dic[user_name] = user_info
-        with open("dataset/users_info_dic.pkl", "wb") as t:
-            pickle.dump(users_info_dic, t)
-        t.close()
-        print('Congratulations! The registration is successful.')
-    else:
-        print('Login success, ', user_name, '!')
-    return users_info_dic[user_name]
-
-
-def to_query():
-    """
-    根据输入查询相关网页链接
-    :return:
-    """
-    query_str = input('Please enter your query content: ')
-    # 查询日志
-    now_time = str(datetime.datetime.now())
-    query_log = '[' + now_time + '] user_name:@' + my_user_term.name + ' query_str:' + query_str + '\n'
-    with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
-        f.write(query_log)
-    f.close()
-    print("--------------------start query--------------------------")
-    # content
-    content_result_list = content_query(file_num, query_str)
-    # print(sorted(content_result_list))
-    # title
-    title_result_list = title_query.title_query(query_str)
-    # print(title_result_list)
-    # print(sorted(title_result_list))
-
-    # pagerank
-    with open("dataset/id_pagerank_dic.pkl", "rb") as tf:
-        pagerank_dic = pickle.load(tf)
-    pagerank_list = list(pagerank_dic.values())
-
-    # print("title only")
-    # get_final_result(title_result_list)
-    # print("content only")
-    # get_final_result(content_result_list)
-    # print("title and content")
-    title_content = np.array(content_result_list) * 0.1 + np.array(title_result_list)
-    # get_final_result(title_content)
-    title_content_pagerank = title_content + np.array(pagerank_list)
-    print('title_content_pagerank')
-    get_final_result(title_content_pagerank)
-    tf.close()
-    print("------------------------end-----------------------------")
-    # print('猜你喜欢：')
+# def log_in_v1():
+#     """
+#     登录/注册
+#     :return: 用户的年龄和性别
+#     """
+#     users_info_dic = dict()
+#     user_name = input('Welcome!\nEnter user name: ')
+#     # 核对是否注册过
+#     try:
+#         with open("dataset/users_info_dic.pkl", "rb") as tf:
+#             users_info_dic = pickle.load(tf)
+#     except:
+#         users_info_dic = dict()
+#     tf.close()
+#     if user_name not in users_info_dic.keys():
+#         print('Error, you have not registered yet.')
+#         user_name = input('Enter the user name to register: ')
+#         user_age = input('Enter your age: ')
+#         user_sex = input('Enter your sex(male or female): ')
+#         user_info = user_term(user_name, user_age, user_sex)
+#         users_info_dic[user_name] = user_info
+#         with open("dataset/users_info_dic.pkl", "wb") as t:
+#             pickle.dump(users_info_dic, t)
+#         t.close()
+#         print('Congratulations! The registration is successful.')
+#     else:
+#         print('Login success, ', user_name, '!')
+#     return users_info_dic[user_name]
+#
+#
+# def to_query():
+#     """
+#     根据输入查询相关网页链接
+#     :return:
+#     """
+#     query_str = input('Please enter your query content: ')
+#     # 查询日志
+#     now_time = str(datetime.datetime.now())
+#     query_log = '[' + now_time + '] user_name:@' + my_user_term.name + ' query_str:' + query_str + '\n'
+#     with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
+#         f.write(query_log)
+#     f.close()
+#     print("--------------------start query--------------------------")
+#     # content
+#     content_result_list = content_query(file_num, query_str)
+#     # print(sorted(content_result_list))
+#     # title
+#     title_result_list = title_query.title_query(query_str)
+#     # print(title_result_list)
+#     # print(sorted(title_result_list))
+#
+#     # pagerank
+#     with open("dataset/id_pagerank_dic.pkl", "rb") as tf:
+#         pagerank_dic = pickle.load(tf)
+#     pagerank_list = list(pagerank_dic.values())
+#
+#     # print("title only")
+#     # get_final_result(title_result_list)
+#     # print("content only")
+#     # get_final_result(content_result_list)
+#     # print("title and content")
+#     title_content = np.array(content_result_list) * 0.1 + np.array(title_result_list)
+#     # get_final_result(title_content)
+#     title_content_pagerank = title_content + np.array(pagerank_list)
+#     print('title_content_pagerank')
+#     get_final_result(title_content_pagerank)
+#     tf.close()
+#     print("------------------------end-----------------------------")
+#     # print('猜你喜欢：')
 
 # def jump_to_query(parent):
     # pass
@@ -258,10 +260,13 @@ def query_result_view(is_wildcard,query_str_entry, user_name_str, parent_plus):
         pagerank_dic = pickle.load(tf)
     pagerank_list = list(pagerank_dic.values())
     # 组合相似度
-    title_content = np.array(content_result_list) * 0.1 + np.array(title_result_list)
+    # 根据年龄为用户设定标题、内容的比例
+    if global_age < 25:
+        title_content = np.array(content_result_list) * 0.1 + np.array(title_result_list)
+    else:
+        title_content = np.array(content_result_list) * 0.3 + np.array(title_result_list)*0.05
     title_content_pagerank = title_content + np.array(pagerank_list)
     print('@ title_content_pagerank query')
-
     res = get_final_result(title_content_pagerank)
     print('end query time 2 ',str(datetime.datetime.now())[0:-7])
     tf.close()
