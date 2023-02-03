@@ -38,7 +38,11 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
         used_url_set.add(base_url)
         print('无法爬取该页面//$^$//')
         return count
-
+    if '_redirect' in base_url or 'login' in base_url:
+        to_use_url_list.remove(base_url)
+        used_url_set.add(base_url)
+        print('_redirect or login 无法爬取该页面//$^$//')
+        return count
     # 返回爬取到的网页
     html = requests.get(base_url, timeout=5)
     # 解决爬取网页乱码的问题
@@ -169,13 +173,13 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
 
 
 def spider():
-    cc_base_url = 'http://news.nankai.edu.cn'#http://cc.nankai.edu.cn'
+    cc_base_url = 'http://news.nankai.edu.cn'
     # cur = 'http://cc.nankai.edu.cn'
     # print(type(cur))
     # 已经爬取过的网页，用集合
     used_url_set = set()
     # 将要爬取的网页，用列表保存，因为集合无序，无法遍历
-    to_use_url_list = ['http://news.nankai.edu.cn']#['http://cc.nankai.edu.cn']
+    to_use_url_list = ['http://news.nankai.edu.cn']#'http://news.nankai.edu.cn']#['http://cc.nankai.edu.cn']
     # 这是需要登录、不在校园网内无法访问的url。爬不了的
     dustbin_set = [
         'http://cc-backend.nankai.edu.cn',
@@ -189,7 +193,9 @@ def spider():
         'http://http://news.nankai.edu.cn/dcxy/system/2022/05/18/030051345.shtml',
         'http://news.nankai.edu.cn/index.shtml',
         'http://news.nankai.edu.cn/mailto:nknews@nankai.edu.cn',
-        'http://http://news.nankai.edu.cn/dcxy/system/2022/05/16/030051303.shtml'
+        'http://http://news.nankai.edu.cn/dcxy/system/2022/05/16/030051303.shtml',
+        'http://http://news.nankai.edu.cn/dcxy/system/2022/05/11/030051234.shtml'
+
     ]
     # 字典，记录1号对应哪个url，2号对应哪个url（1、2在文件标题中）
     url_id_dic = dict()
@@ -200,6 +206,7 @@ def spider():
     mycount = 0
     for i in range(0, 300):
         # []不是空的
+        #
         if len(to_use_url_list) != 0 and mycount < 250:
             print("@ 爬取网页个数：", i, "  爬取成功个数：", mycount)
             # if mycount == 248:

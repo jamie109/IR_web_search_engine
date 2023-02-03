@@ -15,9 +15,11 @@ import datetime
 import tkinter
 from tkinter import *
 from tkinter import messagebox
+import random
 
 # 全局，不作为参数输入
 my_user_term = None
+global_age = 0
 # user_name =None
 #global_user_name = None
 class user_term:
@@ -31,6 +33,34 @@ class user_term:
         self.sex = sex
         # self.passport = passport
 
+
+
+def recm_based_on_age(user_age):
+    recm_list = []
+    if user_age < 25:
+        recm_list =[
+        '学术纵横10位优秀研究生获评南开十杰荣誉称号广播南开大学\n http://news.nankai.edu.cn/gb/system/2021/01/15/030044176.shtml',
+        '南开大学博士生获评全国大学生年度人物提名奖南开要闻南开大学\n http://news.nankai.edu.cn/ywsd/system/2023/01/24/030054301.shtml',
+        '1437期2022级新生开学典礼隆重举行南开大学报南开大学\n http://news.nankai.edu.cn/nkdxb/system/2022/09/27/030052954.shtml',
+        '专题2022年南开大学毕业季南开要闻南开大学\n http://news.nankai.edu.cn/xlzt/system/2022/06/22/030051775.shtml',
+        '1435期2022届毕业生扬帆逐梦启新程南开大学报南开大学\n http://news.nankai.edu.cn/nkdxb/system/2022/06/27/030051859.shtml',
+        '南开欢迎你5000余名硕博新生报到南开要闻南开大学\n http://news.nankai.edu.cn/ywsd/system/2022/09/03/030052668.shtml',
+        '学习二十大精神牢记总书记嘱托南开大学师生座谈会召开南开要闻南开大学\n http://news.nankai.edu.cn/ywsd/system/2023/01/17/030054271.shtml',
+        '组图新学期首日科学有效防控安全有序开学光影南开南开大学\n http://news.nankai.edu.cn/gynk/system/2021/01/08/030043781.shtml'
+        ]
+    else:
+        recm_list = [
+            '今晚报潜心科研创新勇攀世界科技高峰媒体南开南开大学\n http://news.nankai.edu.cn/mtnk/system/2023/01/19/030054288.shtml',
+            '1413期我校与滨海新区全面深化战略合作南开大学报南开大学\n http://news.nankai.edu.cn/nkdxb/system/2021/04/20/030045575.shtml',
+            '杨振宁先生百岁华诞葛墨林院士讲述杨振宁先生的南开故事上南开故事南开大学\n http://news.nankai.edu.cn/nkrw/system/2022/09/26/030052948.shtml',
+            '1422期化学学科创建100周年纪念大会召开南开大学报南开大学\n http://news.nankai.edu.cn/nkdxb/system/2021/11/01/030048602.shtml',
+            '津云南开大学以人才学科之石筑牢高等教育之基媒体南开南开大学\n http://news.nankai.edu.cn/mtnk/system/2023/01/19/030054289.shtml',
+            '学术纵横校学术委员会考核评审百名青年学科带头人及团队项目广播南开大学\n http://news.nankai.edu.cn/gb/system/2021/01/15/030044192.shtml',
+            '学术纵横南开大学图灵书院开班跨学科打造师生共同体广播南开大学\n http://news.nankai.edu.cn/gb/system/2021/01/15/030044183.shtml'
+        ]
+    #随机选3个
+    recm_list_3_news = random.sample(recm_list, 3)
+    return recm_list_3_news
 
 def content_query(is_wildcard, file_num, query_str):
     """
@@ -113,7 +143,13 @@ def get_final_result(result_list):
     print('The query has ended.Byebye~')
     tf1.close()
     tf.close()
+    # 增加个性化推荐
+    output_res = output_res + '\nYou may be interested in the following news————\n'
+    print('user age is ', global_age)
     # print(f"\nthe output_res is ", output_res )
+    to_recommed_3_news = recm_based_on_age(global_age)
+    for i in range(3):
+        output_res = output_res + '@ ' + to_recommed_3_news[i] + '\n'
     return output_res
 
 
@@ -356,6 +392,9 @@ def save_info(user_name, user_age, user_sex, parent):
     f.close()
     print('@ write user registration information log over.')
     tkinter.messagebox.showinfo(message="The registration is successful.")
+    # 获取全局变量用户年龄
+    global global_age
+    global_age = user_age_int
 
 
 def sign_up(flag, parent):
@@ -426,6 +465,7 @@ def check_info(e1, parent):
     """
     #parent.destroy()
     user_name = e1.get()
+
     # 核对是否注册过
     print('check_info user name :', user_name)
     try:
@@ -471,6 +511,9 @@ def check_info(e1, parent):
         f.close()
         print('Login success, ', user_name, '!')
         print('@ write user login information log over.')
+        # 获取全局变量用户年龄
+        global global_age
+        global_age = users_info_dic[user_name].age
 
 
 def log_in(parent):
