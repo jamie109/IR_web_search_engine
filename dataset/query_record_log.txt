@@ -214,3 +214,10 @@
 [2023-02-03 19:36:44] OP: Wildcard_query, user_name:@testtest, query_str:陈*
 [2023-02-03 19:37:25] OP: sign_up, user_name:@test_signup, user_age:21, user_sex:female
 [2023-02-03 19:40:54] OP: sign_up, user_name:@test_signup, user_age:21, user_sex:female
+[2023-02-03 19:46:58] OP: log_in, user_name:@派大星
+[2023-02-03 19:47:35] OP: In-station_query, user_name:@派大星, query_str:学习二十大精神
+[2023-02-03 19:57:29] OP: Wildcard_query, user_name:@派大星, query_str:叶?莹
+[2023-02-03 20:01:19] OP: Wildcard_query, user_name:@派大星, query_str:*宁
+[2023-02-03 20:03:32] OP: In-station_query, user_name:@派大星, query_str:语言文化
+[2023-02-03 20:04:57] OP: log_in, user_name:@leo
+[2023-02-03 20:05:02] OP: In-station_query, user_name:@leo, query_str:语言文化
