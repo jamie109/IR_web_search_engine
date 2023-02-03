@@ -1,4 +1,3 @@
-import build_index
 import content_inverted_index
 import pickle
 import title_query
@@ -21,12 +20,18 @@ import random
 my_user_term = None
 global_age = 0
 # user_name =None
-#global_user_name = None
+# global_user_name = None
+
+
 class user_term:
+    """
+    保存用户信息的类
+    """
     name = None
     age = None
     sex = None
     # passport = None
+
     def __init__(self, name, age, sex):
         self.name = name
         self.age = age
@@ -34,9 +39,7 @@ class user_term:
         # self.passport = passport
 
 
-
 def recm_based_on_age(user_age):
-    recm_list = []
     if user_age < 25:
         recm_list =[
         '学术纵横10位优秀研究生获评南开十杰荣誉称号广播南开大学\n http://news.nankai.edu.cn/gb/system/2021/01/15/030044176.shtml',
@@ -64,6 +67,7 @@ def recm_based_on_age(user_age):
     recm_list_3_news = random.sample(recm_list, 3)
     return recm_list_3_news
 
+
 def content_query(is_wildcard, file_num, query_str):
     """
     如果是通配查询，要对输入字符串进行处理，？单个字符，*任意字符序列
@@ -80,7 +84,6 @@ def content_query(is_wildcard, file_num, query_str):
     if is_wildcard:
         query_str_list = title_query.proc_wildcard(list(inverted_index_dic.keys()), query_str)
     else:
-    #query_str_list = query_str.split(' ')
         # 方式一：分词处理
         # 去标点、小写、分词
         query_str = query_str.replace(' ', '')
@@ -104,7 +107,7 @@ def content_query(is_wildcard, file_num, query_str):
                 #print('@num', num, ':', term_tmp, ' for ', item)
                 #num = num + 1
                 #print(content_query_dic[term_tmp.txt_id],term_tmp.count )
-                content_query_dic[term_tmp.txt_id] = content_query_dic[term_tmp.txt_id] + 1 + math.log(term_tmp.count, 10)* 0.1
+                content_query_dic[term_tmp.txt_id] = content_query_dic[term_tmp.txt_id] + 1 + math.log(term_tmp.count, 10) * 0.1
 
     #print('内容查询结果：', content_query_dic)
     # 倒排字典存到本地
@@ -250,7 +253,7 @@ def query_result_view(is_wildcard,query_str_entry, user_name_str, parent_plus):
     f.close()
     print('@ write query log over.')
     # 开始查询
-    print('start query time 1 ', str(datetime.datetime.now())[0:-7])
+    print('start query time ： ', str(datetime.datetime.now())[0:-7])
     # content
     content_result_list = content_query(is_wildcard, file_num, query_str)
     # title
@@ -268,7 +271,7 @@ def query_result_view(is_wildcard,query_str_entry, user_name_str, parent_plus):
     title_content_pagerank = title_content + np.array(pagerank_list)
     print('@ title_content_pagerank query')
     res = get_final_result(title_content_pagerank)
-    print('end query time 2 ',str(datetime.datetime.now())[0:-7])
+    print('end query time ： ',str(datetime.datetime.now())[0:-7])
     tf.close()
     query_result_view_win = Tk()
     query_result_view_win.title('query result of [' + query_str + ']')
@@ -324,12 +327,12 @@ def query(flag, user_name, user_age, user_sex, parent, parent_plus = None):
     query_start.title('In-station query')
     query_start.geometry("350x200+400+200")
     input_query_str_entry = Entry(query_start, width=30)
-    Label(query_start, text='\n Input query statement:', font="微软雅黑 14").grid(row=0, column=0, columnspan=2, sticky="w",
-                                                                    pady=10)
+    Label(query_start, text='\n Input query statement:', font="微软雅黑 14").grid(row=0, column=0,
+                                                                columnspan=2, sticky="w", pady=10)
     input_query_str_entry.grid(row=1, column=0, sticky="e", padx=20)
     Button(query_start, text='View query results', font="宋体 14", relief="raised",
-           command=lambda:query_result_view(False, input_query_str_entry, user_name_str, parent_plus)).grid(row=2, column=0, columnspan=2,
-                                                                                    pady=20)
+           command=lambda:query_result_view(False, input_query_str_entry, user_name_str,
+                                            parent_plus)).grid(row=2, column=0, columnspan=2, pady=20)
     #parent.destroy()
     # if parent_plus is not None:
     #     parent_plus.destroy()
@@ -348,22 +351,22 @@ def wildcard_query(user_name, parent, parent_plus = None):
     wildcard_query_start.title('wildcard query')
     wildcard_query_start.geometry("350x300+400+200")
     input_query_str_entry = Entry(wildcard_query_start, width=30)
-    Label(wildcard_query_start, text='\n "?" match a character', font="微软雅黑 14").grid(row=0, column=0, columnspan=2, sticky="w",
-                                                                              pady=10)
+    Label(wildcard_query_start, text='\n "?" match a character', font="微软雅黑 14").grid(row=0,
+                                                                column=0, columnspan=2, sticky="w", pady=10)
     Label(wildcard_query_start,
-          text='"*" Matches any character sequence',font="微软雅黑 14").grid(row=1, column=0, columnspan=2, sticky="w",
-                               pady=10)
+          text='"*" Matches any character sequence',font="微软雅黑 14").grid(row=1, column=0,
+                                                                         columnspan=2, sticky="w", pady=10)
     Label(wildcard_query_start,
-          text=' Input query statement:',font="微软雅黑 14").grid(row=2, column=0, columnspan=2, sticky="w",
-                               pady=10)
+          text=' Input query statement:',font="微软雅黑 14").grid(row=2, column=0,
+                                                              columnspan=2, sticky="w",pady=10)
 
     input_query_str_entry.grid(row=3, column=0, sticky="e", padx=20)
     Button(wildcard_query_start, text='View query results', font="宋体 14", relief="raised",
-           command=lambda: query_result_view(True, input_query_str_entry, user_name_str, parent_plus)).grid(row=4, column=0,
-                                                                                                 columnspan=2,
-                                                                                                 pady=20)
+           command=lambda: query_result_view(True, input_query_str_entry, user_name_str,
+                                             parent_plus)).grid(row=4, column=0, columnspan=2, pady=20)
     # if parent_plus is not None:
     #     parent_plus.destroy()
+
 
 def save_info(user_name, user_age, user_sex, parent):
     # 解决出现两个弹窗的问题
@@ -390,8 +393,8 @@ def save_info(user_name, user_age, user_sex, parent):
     print(f'@Congratulations,{user_name.get()}! The registration is successful.')
     # 注册日志
     now_time = str(datetime.datetime.now())[0:-7]
-    query_log = '[' + now_time + '] ' + 'OP: sign_up, ' + 'user_name:@' + user_name.get() + ', user_age:' + str(
-        user_age_int) + ', user_sex:' + user_sex.get() + '\n'
+    query_log = '[' + now_time + '] ' + 'OP: sign_up, ' + 'user_name:@' + user_name.get() + ', user_age:' \
+                + str(user_age_int) + ', user_sex:' + user_sex.get() + '\n'
     with open("dataset/query_record_log.txt", "a", encoding='utf-8') as f:
         f.write(query_log)
     f.close()
@@ -415,21 +418,23 @@ def sign_up(flag, parent):
     user_name = Entry(signup, width=30)
     user_age = Entry(signup, width=30)
     user_sex = Entry(signup, width=30)
-    Label(signup, text='\n  Enter your name:', font="微软雅黑 12").grid(row=0, column=0, columnspan=2, sticky="w",
-                                                                   pady=10)
+    Label(signup, text='\n  Enter your name:', font="微软雅黑 12").grid(row=0,
+                                                                    column=0, columnspan=2, sticky="w", pady=10)
     user_name.grid(row=1, column=1, sticky="e", padx=30)
-    Label(signup, text='  Enter your age:', font="微软雅黑 12").grid(row=2, column=0, columnspan=2, sticky="w",
-                                                                    pady=10)
+    Label(signup, text='  Enter your age:', font="微软雅黑 12").grid(row=2,
+                                                                 column=0, columnspan=2, sticky="w", pady=10)
     user_age.grid(row=3, column=1, sticky="e", padx=30)
-    Label(signup, text='  Enter your sex(male or female):', font="微软雅黑 12").grid(row=4, column=0, columnspan=2, sticky="w",
-                                                                    pady=10)
+    Label(signup, text='  Enter your sex(male or female):', font="微软雅黑 12").grid(row=4,
+                                                                 column=0, columnspan=2, sticky="w", pady=10)
     user_sex.grid(row=5, column=1, sticky="e", padx=30)
     #保存注册信息
     Button(signup, text='save info', font="楷体 10", relief="raised",
-           command=lambda: save_info(user_name, user_age, user_sex, signup)).grid(row=8, column=0, columnspan=2, pady=20)
+           command=lambda: save_info(user_name, user_age, user_sex, signup)).grid(row=8,
+                                                                                  column=0, columnspan=2, pady=20)
     # 站内查询
     Button(signup, text="In-station query", font="楷体 10", relief="raised",
-           command=lambda: query(flag, user_name, user_age, user_sex, signup)).grid(row=9, column=0, columnspan=2, pady=20)
+           command=lambda: query(flag, user_name, user_age, user_sex, signup)).grid(
+                                                                    row=9, column=0, columnspan=2, pady=20)
     # 通配查询
     Button(signup, text="Wildcard query", font="楷体 10", relief="raised",
            command=lambda: wildcard_query(user_name, signup)).grid(row=10, column=0, columnspan=2, pady=20)
@@ -470,7 +475,6 @@ def check_info(e1, parent):
     """
     #parent.destroy()
     user_name = e1.get()
-
     # 核对是否注册过
     print('check_info user name :', user_name)
     try:

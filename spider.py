@@ -6,22 +6,6 @@ from string import punctuation
 from time import sleep
 import random
 import pickle
-# import Elasticsearch
-# MAX_NUM = 15
-# cc_base_url = 'http://cc.nankai.edu.cn'
-# # cur = 'http://cc.nankai.edu.cn'
-# # print(type(cur))
-# # 已经爬取过的网页，用集合
-# used_url_set = set()
-# # 将要爬取的网页，用列表保存，因为集合无序，无法遍历
-# to_use_url_list = ['http://cc.nankai.edu.cn']
-# # 这是需要登录、不在校园网内无法访问的url。爬不了的
-# dustbin_set = [
-#     'http://cc-backend.nankai.edu.cn',
-#     'http://yzxt.nankai.edu.cn/intern/frontend/web/index.php'
-#     ]
-# # 字典，记录1号对应哪个url，2号对应哪个url（1、2在文件标题中）
-# url_id_dic = dict()
 
 
 def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_base_url, dustbin_set, url_jump_dic, id_url_dic):
@@ -62,7 +46,7 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
     #教代会、工会委员会.txt
     #html_title = html_title.replace("/", '')
     html_title = html_title.replace(' ', '')
-    html_title = re.sub(r"[{}、，。！？·【】）》；;《“”（-：——]+".format(punctuation), '', html_title)
+    html_title = re.sub(r"[{}、，。！？·【】）》；;《“”（-：—]+".format(punctuation), '', html_title)
     if html_title == '404NotFound':
         print('>>>404 Not Found, return')
         used_url_set.add(base_url)
@@ -81,7 +65,8 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
     # print(">>>end write html")
     # 保存内容和标题
     # context
-    doc_context = open(os.path.join('dataset/web_data/' + str(count) + '_' + html_title + '.txt'), 'w', encoding='utf-8')
+    doc_context = open(os.path.join('dataset/web_data/' + str(count) + '_' + html_title + '.txt'),
+                       'w', encoding='utf-8')
     # 把url写在第一行
     """
     url_tmp = base_url + '\n'
@@ -112,35 +97,26 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
     #print(">>>start look for hyperlinks")
     # url and anctext
     # 在html中，a表示超链接，例如<a href="http://www.w3school.com.cn">W3School</a>
-    # 找到所有有超链接的地方，返回的可以看作列表吧，能用[i]索引
+    # 找到所有有超链接的地方，返回的可以看作列表，能用[i]索引
     data = soup.select('a')
     pages = set()
-    # url_anc.write("+++ now is : " + cur + "\n")
     # 遍历这些超链接
     #num = 0
     # 字典，每个url对应一个列表，列表中记录这个url可以跳转的其他url，字符串类型['url1','url2']
     url_jump_dic[count] = []
     for item in data:
         #print("处理前", item)
-        # get_text()函数用来获取tag(这里是item)中包含的文本内容
-        # 正则替换，就是把回车什么的去掉，变成一行文字
+        # 锚文本
         text = re.sub("[\r \n\t]", '', item.get_text())
         #print("正则替换、处理后", text)
         # 如果text中没有内容,continue
-        # text == None改为is
-        if text is None or text == '':
+        if text == None or text == '':
             continue
         # 找item中的href,链接， 它是<a href="http://www.w3school.com.cn">W3School</a>
         url = item.get('href')
-        # None改为is
         if url is None or url == '' or re.search('java|void', url) != None:
-            # href=”javascript:void(0);”这个的含义是，让超链接去执行一个js函数，而不是去跳转到一个地址，
-            # void(0)表示一个空的方法，也就是不执行js函数。
-            # 应该是没有实际链接的意思,这种情况下continue
             continue
-        # add header
-        # 这个if语句用来完善一下前面我们得到的超链接
-        # 如果他不是一个独立的链接,那么我们给它加上前缀,http://cc.nankai.edu.cn/链接
+        # 这个if语句用来完善得到的超链接。加上前缀 http://cc.nankai.edu.cn/链接
         #if re.search('\.cn|\.com', url) == None:
         if re.match('http|https|www\.', url) == None:
             #if url[0] != '\/':
@@ -148,7 +124,6 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
                 url = '/' + url
                 # cc_base_url就是http://cc.nankai.edu.cn
             url = cc_base_url + url
-        # 如果这个href里有文件
         #print("完善后的url",  url)
         #to_use_url_list中不能重复添加url
 
@@ -206,7 +181,6 @@ def spider():
     mycount = 0
     for i in range(0, 300):
         # []不是空的
-        #
         if len(to_use_url_list) != 0 and mycount < 250:
             print("@ 爬取网页个数：", i, "  爬取成功个数：", mycount)
             # if mycount == 248:
