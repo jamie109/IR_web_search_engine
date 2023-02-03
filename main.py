@@ -190,7 +190,7 @@ def to_query():
 # def jump_to_query(parent):
     # pass
 
-def query_result_view(is_wildcard,query_str_entry, user_name_str, parent):
+def query_result_view(is_wildcard,query_str_entry, user_name_str, parent_plus):
     """
     输出查询结果,
     :param query_str_entry:查询字符串	输入控件
@@ -235,16 +235,19 @@ def query_result_view(is_wildcard,query_str_entry, user_name_str, parent):
     Label(query_result_view_win, text=res, font="微软雅黑 10",justify='left').grid(row=0, column=0, columnspan=2, sticky="w",
                                                                    pady=10)
     # parent.destroy()
+    # if parent_plus is not None:
+    #     parent_plus.destroy()
 
 
-def query(flag, user_name, user_age, user_sex, parent):
+def query(flag, user_name, user_age, user_sex, parent, parent_plus = None):
     """
     输入查询字符串，站内查询
     :param flag:是否需要保存用户信息
-    :param user_name:用户名输入控件
+    :param user_name:用户名 字符串
     :param user_age:年龄	输入控件
     :param user_sex:性别 输入控件
     :param parent:
+    :param parent_plus:如果是从log in窗口跳过来的，关闭log in窗口
     :return:
     """
     user_name_str = user_name.get()
@@ -284,16 +287,19 @@ def query(flag, user_name, user_age, user_sex, parent):
                                                                     pady=10)
     input_query_str_entry.grid(row=1, column=0, sticky="e", padx=20)
     Button(query_start, text='View query results', font="宋体 14", relief="raised",
-           command=lambda:query_result_view(False, input_query_str_entry, user_name_str, parent)).grid(row=2, column=0, columnspan=2,
+           command=lambda:query_result_view(False, input_query_str_entry, user_name_str, parent_plus)).grid(row=2, column=0, columnspan=2,
                                                                                     pady=20)
     #parent.destroy()
+    # if parent_plus is not None:
+    #     parent_plus.destroy()
 
 
-def wildcard_query(user_name, parent):
+def wildcard_query(user_name, parent, parent_plus = None):
     """
     通配查询
     :param user_name:
     :param parent:
+    :param parent_plus:
     :return:
     """
     user_name_str = user_name.get()
@@ -312,9 +318,11 @@ def wildcard_query(user_name, parent):
 
     input_query_str_entry.grid(row=3, column=0, sticky="e", padx=20)
     Button(wildcard_query_start, text='View query results', font="宋体 14", relief="raised",
-           command=lambda: query_result_view(True, input_query_str_entry, user_name_str, parent)).grid(row=4, column=0,
+           command=lambda: query_result_view(True, input_query_str_entry, user_name_str, parent_plus)).grid(row=4, column=0,
                                                                                                  columnspan=2,
                                                                                                  pady=20)
+    # if parent_plus is not None:
+    #     parent_plus.destroy()
 
 def save_info(user_name, user_age, user_sex, parent):
     # 解决出现两个弹窗的问题
@@ -400,13 +408,13 @@ def login_jump_query(user_name_entry, parent):
                                                     column=0, columnspan=2, sticky="w", pady=10)
     Button(jump_to_query, text="In-station query", font="楷体 14", relief="raised",
            command=lambda: query(flag=False, user_name=user_name_entry, user_age=None, user_sex=None,
-                                 parent=jump_to_query)).grid(row=1, column=0, columnspan=2, pady=20)
+                                 parent=jump_to_query,parent_plus=parent)).grid(row=1, column=0, columnspan=2, pady=20)
 
     # 通配查询
     Label(jump_to_query, text='\nChoose wildcard query:', font="微软雅黑 14"
           ).grid(row=2, column=0, columnspan=2, sticky="w", pady=10)
     Button(jump_to_query, text="Wildcard query", font="楷体 14", relief="raised",
-           command=lambda: wildcard_query(user_name_entry, jump_to_query)).grid(row=3, column=0, columnspan=2, pady=20)
+           command=lambda: wildcard_query(user_name_entry, jump_to_query, parent)).grid(row=3, column=0, columnspan=2, pady=20)
     #parent.destroy()
 
 def check_info(e1, parent):
@@ -452,6 +460,7 @@ def check_info(e1, parent):
         # parent.destroy()
         # check_info_suc = Tk()
         # check_info_suc.title('Login success')
+        tkinter.messagebox.showinfo(message="Login success.")
         login_jump_query(e1, parent)
         #query(flag = False, user_name = e1, user_age = None, user_sex = None, parent = parent)
         # 登录日志
