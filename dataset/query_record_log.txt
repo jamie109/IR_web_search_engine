@@ -226,3 +226,31 @@
 [2023-02-04 10:22:00] OP: In-station_query, user_name:@111, query_str:学习二十大精神，会议
 [2023-02-04 10:22:59] OP: In-station_query, user_name:@111, query_str:南开组图拍摄
 [2023-02-04 10:23:27] OP: log_in, user_name:@111
+[2023-02-04 10:46:42] OP: sign_up, user_name:@tom, user_age:20, user_sex:female
+[2023-02-04 10:47:04] OP: In-station_query, user_name:@tom, query_str:拍摄南开组图
+[2023-02-04 10:47:59] OP: In-station_query, user_name:@tom, query_str:二十大精神 会议 学习
+[2023-02-04 11:01:39] OP: sign_up, user_name:@tmo111, user_age:24, user_sex:male
+[2023-02-04 11:05:10] OP: sign_up, user_name:@1234, user_age:13, user_sex:male
+[2023-02-04 11:05:32] OP: In-station_query, user_name:@1234, query_str:拍摄南开组图
+[2023-02-04 11:06:48] OP: In-station_query, user_name:@1234, query_str:二十大精神 会议
+[2023-02-04 11:07:29] OP: Wildcard_query, user_name:@1234, query_str:叶嘉?
+[2023-02-04 11:07:51] OP: Wildcard_query, user_name:@1234, query_str:*宁
+[2023-02-04 11:11:36] OP: sign_up, user_name:@9999, user_age:14, user_sex:male
+[2023-02-04 11:12:01] OP: In-station_query, user_name:@9999, query_str:拍摄南开组图
+[2023-02-04 11:13:10] OP: In-station_query, user_name:@9999, query_str:二十大精神 会议 学习
+[2023-02-04 11:13:40] OP: Wildcard_query, user_name:@9999, query_str:叶?莹
+[2023-02-04 11:14:00] OP: Wildcard_query, user_name:@9999, query_str:杨*
+[2023-02-04 11:14:56] OP: log_in, user_name:@9999
+[2023-02-04 11:15:04] OP: In-station_query, user_name:@9999, query_str:语言文化
+[2023-02-04 11:15:50] OP: log_in, user_name:@夏奇拉
+[2023-02-04 11:15:57] OP: In-station_query, user_name:@夏奇拉, query_str:语言文化
+[2023-02-04 11:31:13] OP: sign_up, user_name:@6, user_age:17, user_sex:female
+[2023-02-04 11:31:40] OP: In-station_query, user_name:@6, query_str:拍摄南开组图
+[2023-02-04 11:35:18] OP: sign_up, user_name:@y, user_age:20, user_sex:female
+[2023-02-04 11:35:36] OP: Wildcard_query, user_name:@y, query_str:叶嘉?
+[2023-02-04 11:36:32] OP: Wildcard_query, user_name:@y, query_str:杨*
+[2023-02-04 11:37:12] OP: In-station_query, user_name:@y, query_str:拍摄南开组图
+[2023-02-04 11:37:36] OP: In-station_query, user_name:@y, query_str:二十大精神 学习 会议
+[2023-02-04 11:38:10] OP: In-station_query, user_name:@y, query_str:语言文化
+[2023-02-04 11:38:59] OP: log_in, user_name:@夏奇拉
+[2023-02-04 11:39:11] OP: In-station_query, user_name:@夏奇拉, query_str:语言文化

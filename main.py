@@ -7,7 +7,7 @@ import math
 from sklearn import preprocessing
 import jieba
 import re
-from string import  punctuation
+from string import punctuation
 import numpy as np
 import page_rank
 import datetime
@@ -20,7 +20,7 @@ import random
 my_user_term = None
 global_age = 0
 # user_name =None
-# global_user_name = None
+# global_user_name = Nfone
 
 
 class user_term:
@@ -351,10 +351,10 @@ def wildcard_query(user_name, parent, parent_plus = None):
     wildcard_query_start.title('wildcard query')
     wildcard_query_start.geometry("350x300+400+200")
     input_query_str_entry = Entry(wildcard_query_start, width=30)
-    Label(wildcard_query_start, text='\n "?" match a character', font="微软雅黑 14").grid(row=0,
+    Label(wildcard_query_start, text='\n "?" matches a character', font="微软雅黑 14").grid(row=0,
                                                                 column=0, columnspan=2, sticky="w", pady=10)
     Label(wildcard_query_start,
-          text='"*" Matches any character sequence',font="微软雅黑 14").grid(row=1, column=0,
+          text='"*" matches any character sequence',font="微软雅黑 14").grid(row=1, column=0,
                                                                          columnspan=2, sticky="w", pady=10)
     Label(wildcard_query_start,
           text=' Input query statement:',font="微软雅黑 14").grid(row=2, column=0,

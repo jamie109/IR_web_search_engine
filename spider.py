@@ -148,6 +148,7 @@ def get_url_data(base_url, count, url_id_dic, to_use_url_list, used_url_set, cc_
 
 
 def spider():
+    # 南开新闻网
     cc_base_url = 'http://news.nankai.edu.cn'
     # cur = 'http://cc.nankai.edu.cn'
     # print(type(cur))
@@ -190,7 +191,7 @@ def spider():
             mycount = get_url_data(tmp, mycount, url_id_dic, to_use_url_list, used_url_set, cc_base_url, dustbin_set, url_jump_dic, id_url_dic)
             # 爬取网页 礼貌hh
             # 休息一下。太慢了，不休息了
-            # sleep(random.randint(0, 1))
+            sleep(random.randint(0, 1))
 
     # 保存字典文件url_id_dic
     with open("dataset/url_id_dic.pkl", "wb") as tf:
