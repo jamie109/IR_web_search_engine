@@ -221,3 +221,8 @@
 [2023-02-03 20:03:32] OP: In-station_query, user_name:@派大星, query_str:语言文化
 [2023-02-03 20:04:57] OP: log_in, user_name:@leo
 [2023-02-03 20:05:02] OP: In-station_query, user_name:@leo, query_str:语言文化
+[2023-02-04 10:20:56] OP: sign_up, user_name:@111, user_age:15, user_sex:male
+[2023-02-04 10:21:39] OP: In-station_query, user_name:@111, query_str:学习二十大精神会议
+[2023-02-04 10:22:00] OP: In-station_query, user_name:@111, query_str:学习二十大精神，会议
+[2023-02-04 10:22:59] OP: In-station_query, user_name:@111, query_str:南开组图拍摄
+[2023-02-04 10:23:27] OP: log_in, user_name:@111
